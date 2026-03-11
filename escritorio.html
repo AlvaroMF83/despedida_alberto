@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Windows</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI, sans-serif;
+background:#0b2c8a;
+color:white;
+height:100vh;
+overflow:hidden;
+}
+
+/* DESKTOP ICONS */
+
+.desktop{
+padding:30px;
+display:grid;
+grid-template-columns:repeat(6,120px);
+gap:25px;
+}
+
+.icon{
+text-align:center;
+cursor:pointer;
+}
+
+.icon img{
+width:48px;
+margin-bottom:6px;
+}
+
+/* TASKBAR */
+
+.taskbar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:48px;
+background:#f3f3f3;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:18px;
+box-shadow:0 -1px 5px rgba(0,0,0,.2);
+color:black;
+}
+
+.start-btn{
+cursor:pointer;
+font-size:22px;
+}
+
+/* START MENU */
+
+.start-menu{
+position:fixed;
+bottom:60px;
+left:50%;
+transform:translateX(-50%);
+width:500px;
+background:white;
+color:black;
+border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,.4);
+display:none;
+padding:20px;
+}
+
+.start-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:20px;
+}
+
+.start-icon{
+text-align:center;
+cursor:pointer;
+}
+
+.start-icon img{
+width:32px;
+}
+
+.recommended{
+border-top:1px solid #ddd;
+padding-top:15px;
+}
+
+.rec-item{
+padding:6px;
+cursor:pointer;
+}
+
+.rec-item:hover{
+background:#f1f1f1;
+}
+
+/* USER BAR */
+
+.userbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:15px;
+border-top:1px solid #ddd;
+padding-top:10px;
+}
+
+/* POWER MENU */
+
+.power-menu{
+position:fixed;
+bottom:120px;
+left:50%;
+transform:translateX(150px);
+background:white;
+border-radius:6px;
+box-shadow:0 5px 15px rgba(0,0,0,.3);
+display:none;
+}
+
+.power-item{
+padding:10px 20px;
+cursor:pointer;
+}
+
+.power-item:hover{
+background:#f2f2f2;
+}
+
+/* CLOCK */
+
+.clock{
+position:absolute;
+right:15px;
+font-size:12px;
+text-align:right;
+}
+
+.bbva{
+position:absolute;
+right:40px;
+bottom:60px;
+font-size:90px;
+opacity:.6;
+}
+
+.power-btn{
+width:34px;
+height:34px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+font-size:18px;
+background:#f0f0f0;
+}
+
+.power-btn:hover{
+background:#e0e0e0;
+}
+
+.power-menu{
+position:fixed;
+bottom:130px;
+left:50%;
+transform:translateX(160px);
+background:#2b2b2b;
+color:white;
+border-radius:8px;
+box-shadow:0 10px 20px rgba(0,0,0,.5);
+display:none;
+overflow:hidden;
+}
+
+.power-item{
+padding:12px 28px;
+cursor:pointer;
+font-size:14px;
+}
+
+.power-item:hover{
+background:#3a3a3a;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- DESKTOP -->
+
+<div class="desktop">
+
+<div class="icon" onclick="openApp('gmail.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
+<div>Correo</div>
+</div>
+
+<div class="icon" onclick="openApp('igomonline.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/732/732220.png">
+<div>Igom Online</div>
+</div>
+
+<div class="icon" onclick="openApp('explorador.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+<div>Este equipo</div>
+</div>
+
+<div class="icon" onclick="openApp('intranet.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/300/300221.png">
+<div>Intranet</div>
+</div>
+
+<div class="icon" onclick="openChrome()">
+<img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png">
+<div>Google Chrome</div>
+</div>
+
+<div class="icon" onclick="openCCC()">
+<img src="img/icono_ccc.jpg">
+<div>CCC2022</div>
+</div>
+
+<div class="icon" onclick="open3270()">
+<img src="img/icono_3270.jpg">
+<div>TN3270</div>
+</div>
+
+</div>
+
+<div class="bbva">BBVA</div>
+
+<!-- TASKBAR -->
+
+<div class="taskbar">
+
+<div class="start-btn" onclick="toggleStart()">⊞</div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" width="20" onclick="openApp('gmail.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" width="20" onclick="openApp('igomonline.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png" width="20" onclick="openApp('explorador.html')">
+
+<div class="clock">
+09:00<br>09/03/2026
+</div>
+
+</div>
+
+<!-- START MENU -->
+
+<div id="startMenu" class="start-menu">
+
+<div class="start-grid">
+
+<div class="start-icon" onclick="openApp('gmail.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/732/732200.png">
+<div>Correo</div>
+</div>
+
+<div class="start-icon" onclick="openApp('igomonline.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/732/732220.png">
+<div>Igom</div>
+</div>
+
+<div class="start-icon" onclick="openApp('explorador.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/716/716784.png">
+<div>Este equipo</div>
+</div>
+
+<div class="start-icon" onclick="openApp('intranet.html')">
+<img src="https://cdn-icons-png.flaticon.com/512/300/300221.png">
+<div>Intranet</div>
+</div>
+
+</div>
+
+<div class="recommended">
+
+<b>Recomendados</b>
+
+<div class="rec-item" onclick="openApp('gmail.html')">Correo</div>
+<div class="rec-item" onclick="openApp('igomonline.html')">Igom Online</div>
+<div class="rec-item" onclick="openApp('explorador.html')">Este equipo</div>
+
+</div>
+
+<div class="userbar">
+
+<div>ALBERTO GOMEZ CASTRO</div>
+
+<div class="power-btn" onclick="togglePower()">
+⏻
+</div>
+
+</div>
+
+</div>
+
+<!-- POWER MENU -->
+
+<div id="powerMenu" class="power-menu">
+
+<div class="power-item" onclick="shutdown()">Apagar</div>
+<div class="power-item" onclick="lock()">Bloquear</div>
+
+</div>
+
+<script>
+
+function openApp(url){
+window.open(url,"_blank")
+}
+
+function toggleStart(){
+let m=document.getElementById("startMenu")
+m.style.display=m.style.display==="block"?"none":"block"
+}
+
+function togglePower(){
+let p=document.getElementById("powerMenu")
+p.style.display=p.style.display==="block"?"none":"block"
+}
+
+function shutdown(){
+window.close()
+}
+
+function lock(){
+window.location.href="index.html"
+}
+
+function openChrome(){
+window.open(
+"login1.html",
+"chrome",
+"width=550,height=700"
+)
+}
+
+function openCCC(){
+window.open(
+"ccc_apertura.html",
+"ccc_apertura",
+"width=1150,height=710"
+)
+}
+
+
+function open3270(){
+window.open(
+"3270_login.html",
+"3270_login",
+"width=1150,height=900"
+)
+}
+
+</script>
+
+</body>
+</html>

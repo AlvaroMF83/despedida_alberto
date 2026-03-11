@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ADA Console</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI,Arial;
+background:#eef1f4;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+bottom:0;
+width:240px;
+background:#3a4b5f;
+color:white;
+padding:15px;
+}
+
+.logo{
+font-size:20px;
+font-weight:bold;
+margin-bottom:25px;
+}
+
+.section{
+font-size:11px;
+margin-top:18px;
+opacity:.6;
+}
+
+.menu-item{
+padding:10px;
+border-radius:6px;
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.menu-item:hover{
+background:#4b5f77;
+}
+
+.badge-new{
+background:#ff8c00;
+font-size:10px;
+padding:2px 6px;
+border-radius:4px;
+}
+
+/* HEADER */
+
+.header{
+margin-left:240px;
+height:60px;
+background:white;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+border-bottom:1px solid #ddd;
+position:relative;
+}
+
+.breadcrumb{
+font-size:14px;
+}
+
+.icons{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.notify{
+position:relative;
+}
+
+.notify span{
+position:absolute;
+top:-5px;
+right:-6px;
+background:red;
+color:white;
+font-size:10px;
+padding:2px 5px;
+border-radius:10px;
+}
+
+.country{
+display:flex;
+gap:6px;
+margin-left:10px;
+}
+
+.country div{
+background:#e3e7eb;
+padding:3px 6px;
+font-size:11px;
+border-radius:3px;
+cursor:pointer;
+}
+
+.user{
+background:#f1f1f1;
+padding:6px 12px;
+border-radius:20px;
+cursor:pointer;
+}
+
+/* PROFILE */
+
+.profile-menu{
+position:absolute;
+right:10px;
+top:60px;
+width:260px;
+background:white;
+border:1px solid #ccc;
+box-shadow:0 10px 20px rgba(0,0,0,.25);
+display:none;
+z-index:1000;
+}
+
+.profile-title{
+background:#f1f1f1;
+padding:8px 12px;
+font-weight:bold;
+border-bottom:1px solid #ddd;
+}
+
+.profile-header{
+text-align:center;
+padding:10px;
+}
+
+.profile-header img{
+width:70px;
+border-radius:50%;
+}
+
+.profile-name{
+text-align:center;
+font-weight:bold;
+}
+
+.profile-email{
+text-align:center;
+font-size:13px;
+color:#666;
+margin-bottom:10px;
+}
+
+.profile-field{
+padding:6px 15px;
+font-size:14px;
+}
+
+.profile-actions{
+border-top:1px solid #ddd;
+margin-top:10px;
+}
+
+.action{
+padding:10px 15px;
+cursor:pointer;
+}
+
+.action:hover{
+background:#f2f2f2;
+}
+
+/* MAIN */
+
+.main{
+margin-left:240px;
+padding:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:6px;
+padding:20px;
+box-shadow:0 0 5px rgba(0,0,0,.1);
+}
+
+.card h3{
+margin-top:0;
+font-size:16px;
+}
+
+/* FAB */
+
+.fab{
+position:fixed;
+bottom:30px;
+right:30px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:#2b8cff;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="logo">ADA console</div>
+
+<div class="menu-item">
+Dashboard
+<span class="badge-new">NEW</span>
+</div>
+
+<div class="section">DATA LAKE</div>
+<div class="menu-item">Catalog</div>
+<div class="menu-item">Subscriptions</div>
+
+<div class="section">SANDBOX</div>
+<div class="menu-item">Engines</div>
+<div class="menu-item">Models</div>
+<div class="menu-item">Data</div>
+
+<div class="section">PLATFORM</div>
+<div class="menu-item">Repositories</div>
+<div class="menu-item">Projects</div>
+
+<div class="section">TOOLS</div>
+<div class="menu-item">Reports</div>
+
+</div>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="breadcrumb">
+Landing / Dashboard / <b>FINN</b>
+</div>
+
+<div class="icons">
+
+<div class="notify">🔔<span>20</span></div>
+
+📧  
+⚙  
+
+<div class="country">
+<div>ES</div>
+<div>GL</div>
+<div>BR</div>
+<div>MX</div>
+<div>CO</div>
+<div>AR</div>
+<div>PE</div>
+<div>UY</div>
+</div>
+
+<div id="userBtn" class="user" onclick="toggleProfile()">Data Scientist 🙂</div>
+
+</div>
+
+<div id="profileMenu" class="profile-menu">
+
+<div class="profile-title">Profile</div>
+
+<div class="profile-header">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+</div>
+
+<div class="profile-name">ALBERTO GOMEZ CASTRO</div>
+
+<div class="profile-field">
+User: U216190
+</div>
+
+<div class="profile-field">
+Profile:
+<select id="profileSelect">
+<option>Data Scientist</option>
+<option>Project Owner</option>
+</select>
+</div>
+
+<div class="profile-field">
+Last Login: 09-03-2026 18:50:29
+</div>
+
+<div class="profile-actions">
+<div class="action">Reload Profile</div>
+<div class="action">Whoami Dump</div>
+<div class="action">Revoke AppStream Session</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div class="grid">
+
+<div class="card">
+<h3>Welcome to ADA Console</h3>
+
+<p><b>WOW Guiders GPT</b></p>
+<p>Whats new in ADA console?</p>
+<p>Any problems? read the documentation</p>
+<p>BBVA Askbot</p>
+</div>
+
+<div class="card">
+<h3>User Balance</h3>
+<h2>$101.48</h2>
+<canvas id="usageChart"></canvas>
+</div>
+
+<div class="card">
+<h3>Account Balance</h3>
+<h2>$115780.97</h2>
+<canvas id="pieChart"></canvas>
+</div>
+
+<div class="card">
+<h3>Account</h3>
+<p>Actual month costs: $53225</p>
+<p>Annual costs: $115780</p>
+<canvas id="trendChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+<div class="fab">+</div>
+
+<script>
+
+/* PROFILE MENU */
+
+function toggleProfile(){
+let menu=document.getElementById("profileMenu")
+menu.style.display = menu.style.display==="block" ? "none":"block"
+}
+
+document.addEventListener("click",function(e){
+let menu=document.getElementById("profileMenu")
+let btn=document.getElementById("userBtn")
+
+if(!menu.contains(e.target) && !btn.contains(e.target)){
+menu.style.display="none"
+}
+})
+
+document.getElementById("profileSelect")
+.addEventListener("change",function(){
+document.getElementById("userBtn").innerText=this.value+" 🙂"
+})
+
+/* CHARTS */
+
+new Chart(document.getElementById("usageChart"),{
+type:"bar",
+data:{
+labels:["1","2","3","4","5","6","7"],
+datasets:[{data:[6,3,7,4,5,8,2],backgroundColor:"#9b59b6"}]
+}
+})
+
+new Chart(document.getElementById("pieChart"),{
+type:"doughnut",
+data:{
+labels:["EC2","Glue","S3","Athena"],
+datasets:[{data:[40,20,20,20],
+backgroundColor:["#e67e22","#9b59b6","#2ecc71","#3498db"]}]
+}
+})
+
+new Chart(document.getElementById("trendChart"),{
+type:"line",
+data:{
+labels:["Jan","Feb","Mar","Apr","May"],
+datasets:[{data:[10000,20000,18000,22000,21000],
+borderColor:"#2ecc71"}]
+}
+})
+
+</script>
+
+</body>
+</html>

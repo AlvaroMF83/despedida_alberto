@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Control Cuentas Contables - Financial Markets Data</title>
+
+<style>
+
+html,body{
+margin:0;
+height:100%;
+overflow:hidden;
+font-family:Segoe UI, Arial;
+background:#cfcfcf;
+}
+
+/* aplicación */
+
+.app{
+width:100%;
+height:100%;
+background:#e6e6e6;
+border:1px solid #777;
+display:flex;
+flex-direction:column;
+}
+
+/* barra titulo */
+
+.titlebar{
+background:linear-gradient(#d9ecff,#bcd7f5);
+height:30px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 10px;
+font-size:13px;
+border-bottom:1px solid #9cb8d9;
+flex-shrink:0;
+}
+
+.title-left{
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+.title-left img{
+width:16px;
+}
+
+.controls span{
+margin-left:8px;
+cursor:pointer;
+}
+
+/* menu */
+
+.menubar{
+background:#f3f3f3;
+padding:4px 10px;
+border-bottom:1px solid #bbb;
+font-size:13px;
+flex-shrink:0;
+}
+
+.menubar span{
+margin-right:20px;
+cursor:pointer;
+}
+
+/* toolbar */
+
+.toolbar{
+background:#efefef;
+border-bottom:1px solid #bbb;
+padding:4px;
+display:flex;
+gap:6px;
+flex-shrink:0;
+}
+
+.iconbtn{
+width:22px;
+height:22px;
+border:1px solid transparent;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.iconbtn:hover{
+border:1px solid #999;
+background:white;
+}
+
+/* workspace */
+
+.workspace{
+flex:1;
+background:url("img/calabera.jpg") no-repeat right bottom;
+background-size:750px;
+position:relative;
+overflow:hidden;
+}
+
+/* ventana menu */
+
+.menu-window{
+position:absolute;
+left:20px;
+top:20px;
+width:680px;
+height:640px;
+background:#f0f0f0;
+border:1px solid #7f9db9;
+box-shadow:0 2px 6px rgba(0,0,0,0.3);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+/* titulo menu */
+
+.window-title{
+background:#d9ecff;
+padding:4px 8px;
+font-weight:bold;
+border-bottom:1px solid #9cb8d9;
+display:flex;
+align-items:center;
+gap:6px;
+flex-shrink:0;
+}
+
+.window-title img{
+width:16px;
+}
+
+/* cuerpo menu */
+
+.menu-body{
+flex:1;
+display:flex;
+padding:10px;
+gap:10px;
+min-height:0; /* IMPORTANTE */
+}
+
+/* panel areas */
+
+.area-panel{
+width:320px;
+border:1px solid #bdbdbd;
+background:white;
+display:flex;
+flex-direction:column;
+min-height:0; /* IMPORTANTE */
+overflow:hidden;
+}
+
+.area-title{
+background:#f0f0f0;
+border-bottom:1px solid #bdbdbd;
+padding:4px 6px;
+font-size:12px;
+font-weight:bold;
+flex-shrink:0;
+}
+
+/* iconos */
+
+.icon-panel{
+flex:1;
+padding:10px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+overflow-y:auto;
+overflow-x:hidden;
+min-height:0;
+align-content:start;
+}
+
+.icon{
+text-align:center;
+cursor:pointer;
+font-size:12px;
+padding:4px;
+}
+
+.icon img{
+width:48px;
+}
+
+.icon:hover{
+background:#cce4ff;
+}
+
+.icon.active{
+background:#0078d7;
+color:white;
+}
+
+/* submenus */
+
+.option-panel{
+flex:1;
+border:1px solid #bdbdbd;
+background:white;
+padding:10px;
+overflow-y:auto;
+overflow-x:hidden;
+min-height:0;
+}
+
+.option{
+padding:4px;
+font-size:13px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+.option:hover{
+background:#e6f0ff;
+}
+
+.option img{
+width:14px;
+}
+
+/* barra estado */
+
+.statusbar{
+height:24px;
+background:#efefef;
+border-top:1px solid #999;
+display:flex;
+align-items:center;
+font-size:12px;
+flex-shrink:0;
+}
+
+.statusbar div{
+padding:3px 10px;
+border-right:1px solid #bbb;
+}
+
+/* alertas parpadeo */
+
+.alertbtn{
+cursor:pointer;
+background:orange;
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0.3}
+100%{opacity:1}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="titlebar">
+<div class="title-left">
+<img src="img/icono_ccc.jpg">
+Control Cuentas Contables - Financial Markets Data
+</div>
+<div class="controls">
+<span>—</span>
+<span>□</span>
+<span>✕</span>
+</div>
+</div>
+
+<div class="menubar">
+<span>Archivo</span>
+<span>Ver</span>
+<span>Ventana</span>
+<span>Ayuda</span>
+</div>
+
+<div class="toolbar">
+<div class="iconbtn">⏮</div>
+<div class="iconbtn">◀</div>
+<div class="iconbtn">▶</div>
+<div class="iconbtn">⏭</div>
+<div class="iconbtn">💾</div>
+<div class="iconbtn">🖨</div>
+<div class="iconbtn" onclick="openAlertas()">🔔</div>
+</div>
+
+<div class="workspace">
+
+<div class="menu-window">
+
+<div class="window-title">
+<img src="img/icono_ccc.jpg">
+Menu Principal
+</div>
+
+<div class="menu-body">
+
+<div class="area-panel">
+
+<div class="area-title" id="areaTitle">Saldos</div>
+
+<div class="icon-panel">
+
+<div class="icon" onclick="showMenu(this,'saldos')"><img src="img/saldos.png"><br>Saldos</div>
+<div class="icon" onclick="showMenu(this,'tiposmedios')"><img src="img/tiposmedios.png"><br>TiposMedios</div>
+<div class="icon" onclick="showMenu(this,'grupos')"><img src="img/grupos.png"><br>Grupos</div>
+
+<div class="icon" onclick="showMenu(this,'divisas')"><img src="img/divisas.png"><br>Cambios Divisas</div>
+<div class="icon" onclick="showMenu(this,'interes')"><img src="img/ccc.png"><br>Tipos de Interés</div>
+<div class="icon" onclick="showMenu(this,'importacion')"><img src="img/importacion.png"><br>Importacion</div>
+
+<div class="icon" onclick="showMenu(this,'informes')"><img src="img/informes.png"><br>Informes</div>
+<div class="icon" onclick="showMenu(this,'cartera')"><img src="img/ccc.png"><br>Cartera</div>
+<div class="icon" onclick="showMenu(this,'operaciones')"><img src="img/ccc.png"><br>Operaciones</div>
+
+<div class="icon" onclick="showMenu(this,'transitorias')"><img src="img/ccc.png"><br>Transitorias y Tesorera</div>
+<div class="icon" onclick="showMenu(this,'mantenimiento')"><img src="img/mantenimiento.png"><br>Mantenimiento Datos Fijos</div>
+<div class="icon" onclick="showMenu(this,'posiciones')"><img src="img/ccc.png"><br>Posiciones</div>
+
+<div class="icon" onclick="showMenu(this,'estructuras')"><img src="img/estructuras.png"><br>Estructuras</div>
+<div class="icon" onclick="showMenu(this,'sesion3270')"><img src="img/3270.png"><br>3270-5250</div>
+<div class="icon" onclick="showMenu(this,'configuracion')"><img src="img/configuracion.png"><br>Configuración y Utilidades</div>
+
+<div class="icon" onclick="openAlertas()"><img src="img/alertas.png"><br>Alertas/Peticiones</div>
+<div class="icon" onclick="showMenu(this,'conciliaciones')"><img src="img/conciliaciones.png"><br>Conciliaciones</div>
+
+</div>
+
+</div>
+
+<div class="option-panel" id="options"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="statusbar">
+<div>AGC</div>
+<div>ADMINISTRA</div>
+<div>PRODUCCION</div>
+<div id="fecha"></div>
+<div id="hora"></div>
+<div class="alertbtn" onclick="openAlertas()">Alertas/Peticiones</div>
+</div>
+
+</div>
+
+<script>
+
+function openAlertas(){
+window.open("ccc_alertas.html","alertas","width=1400,height=700,resizable=yes")
+}
+
+/* reloj */
+
+function updateClock(){
+const now=new Date()
+document.getElementById("fecha").innerText=now.toLocaleDateString("es-ES")
+document.getElementById("hora").innerText=now.toLocaleTimeString()
+}
+
+setInterval(updateClock,1000)
+updateClock()
+
+/* submenus */
+
+const data={
+saldos:["Saldos. Consulta",
+"Saldos. Consulta y Modificación",
+"Recalculo de Saldos de Grupos",
+"Refundición de Saldos de Oficinas",
+"Reconstrucción de Balances de Oficinas",
+"Copia de Saldos",
+"Movimientos. Consulta",
+"Movimientos. Consulta y Modificación",
+"Movimientos. Copiar o Transferir a Otras Cuentas",
+"Saldos. Cálculo Automático Elementos Parametrizados",
+"Definir Secuencias y Saldos Automáticos",
+"Detallar Saldo Cuentas Individuales a partir de Fichero de Cuentas",
+"Apuntes 7250 Host. Consulta"],
+tiposmedios:["Tipos Medios. Consulta",
+"Definición de Tipos Medios. Consulta",
+"Definición de Tipos Medios. Consulta y Modificación",
+"Grupos Tipos Medios. Consulta",
+"Grupos Tipos Medios. Consulta y Modificación",
+"Definición Grupos Tipos Medios. Consulta",
+"Definición Grupos Tipos Medios. Consulta y Modificación"],
+grupos:["Grupos. Consulta",
+"Grupos. Consulta y Modificación",
+"Definición de Grupos. Consulta",
+"Definición de Grupos. Consulta y Modificación",
+"Comparación Grupos"],
+divisas:["Cambios Divisas. Consulta"],
+interes:["Tipos de Interés. Consulta",
+"Tipos de Interés. Consulta y Modificación",
+"Importación Tipos Interés desde Fichero"],
+importacion:["Importación Ficheros de Saldos",
+"Importación Saldos desde 3270",
+"Importación Movimientos Cuentas (Fichero ó 3270)",
+"Importación Ficheros MTO / Apuntes",
+"Importación Fichero VTC (Access MTO650F)",
+"Importación Cambios desde 3270",
+"Importación Cambios desde Fichero Excel",
+"Importación Tipos Interés desde Fichero",
+"Importación Ficheros Operaciones ABACO / IGOM / MUREX / AMIGA",
+"Importación Catálogo Productos vía 3270",
+"Importación Fichero Sensibilidades Murex",
+"Importación Ficheros Cartera MIDAS / SIGMA / URM",
+"Transferencia a Fichero Listados Midas",
+"Transferencia a Fichero Listados TSO / CEIN",
+"Ejecución SQL Murex",
+"Resto de Importaciones"],
+informes:["Informe Tipos Medios",
+"Informe Saldos (Antes Informe Cascada Productos)",
+"Informe Datos Operaciones",
+"Informe Cuadre Cartera",
+"Informe Cuadre Mercados Organizados",
+"Informe Inventario Cartera",
+"Informes Cuadre Cuentas",
+"Informes Cuentas Transitorias / Tesoreras"],
+cartera:["Datos Cartera. Consulta",
+"Datos Cartera. Consulta y Modificación",
+"Precios. Consulta",
+"Precios. Consulta y Modificación"],
+operaciones:["Datos Operaciones. Consulta",
+"Datos Operaciones. Consulta y Modificación",
+"Datos Operaciones Automáticos. Consulta",
+"Datos Operaciones Automáticos. Consulta y Modificación",
+"Generación Datos Automáticos",
+"Informes Datos Operaciones",
+"Analisis Altas Operaciones",
+"Analisis Altas Operaciones Detalle",
+"Generación datos IGOM ON LINE",
+"Informe Cartera RF",
+"NuevoIgom Online"],
+transitorias: [
+"Movimientos. Consulta",
+"Movimientos. Consulta y Modificación",
+"Cruce Automático Cuentas Transitorias",
+"Informes Cuentas Transitorias / Tesoreras",
+"Cruce Fichero de Operaciones con Movimientos"
+],
+mantenimiento: [
+    "Análisis Operación. Consulta",
+    "Análisis Operación. Consulta y Modificación",
+    "Definición Análisis Operación. Consulta y Modificación",
+    "Definición Análisis Operación. Consulta",
+    "Ajustes. Consulta",
+    "Ajustes. Consulta y Modificación",
+    "Carteras. Consulta",
+    "Carteras. Consulta y Modificación",
+    "Carteras (Grupos). Consulta",
+    "Carteras (Grupos). Consulta y Modificación",
+    "Clases Proceso. Consulta",
+    "Clases Proceso. Consulta y Modificación",
+    "Clases Estructuras. Consulta",
+    "Clases Estructuras. Consulta y Modificación",
+    "Contrapartidas. Consulta",
+    "Contrapartidas. Consulta y Modificación",
+    "Contrapartidas (Grupos). Consulta",
+    "Contrapartidas (Grupos). Consulta y Modificación",
+    "Contrapartidas FRONT a CIF. Proceso",
+    "Cuentas. Consulta",
+    "Cuentas. Consulta y Modificación",
+    "Divisas. Consulta",
+    "Divisas. Consulta y Modificación",
+    "Divisas (Grupos). Consulta",
+    "Divisas (Grupos). Consulta y Modificación",
+    "Entidades. Consulta",
+    "Entidades. Consulta y Modificación",
+    "Oficinas. Consulta",
+    "Oficinas. Consulta y Modificación",
+    "Oficinas (Grupos). Consulta",
+    "Oficinas (Grupos). Consulta y Modificación",
+    "Instrumentos. Consulta",
+    "Instrumentos. Consulta y Modificación",
+    "Areas. Consulta",
+    "Areas. Consulta y Modificación",
+    "Areas (Grupos). Consulta",
+    "Areas (Grupos). Consulta y Modificación",
+    "Porfolios. Consulta",
+    "Porfolios. Consulta y Modificación",
+    "Porfolios (Grupos). Consulta y Modificación"
+  ],
+posiciones: [
+"Posición FX.",
+"Recalcular Posición FX.",
+"Posición CARTERA.",
+"Recalcular Posición Cartera",
+"Recalcular Posición Renta Variable"
+],
+estructuras: [
+"Estructuras. Consulta",
+"Estructuras. Consulta y Modificación",
+"Estructuras. Réplica Subestructuras",
+"Migrar T_DOCUMENTO_ESTRUCTURA a CCC2009",
+"Importación Elementos Estructura",
+"Calculo de Proxies a través de Abaco Derivados y NPV Murex"
+],
+sesion3270: [
+"Iniciar Sesión 3270 BBVA CCC",
+"Finalizar Sesión 3270 BBVA CCC",
+"Iniciar Sesión 3270 BBVA IBM Personal Communications CCC",
+"Finalizar Sesión 3270 BBVA IBM Personal Communications CCC",
+"Iniciar Sesión 5250 BBVA CCC (MIDAS)",
+"Terminar Sesión 5250 BBVA CCC (MIDAS)",
+"Iniciar Sesión IMS CCC",
+"Finalizar Sesión IMS CCC",
+"Petición Balance Divisa IMS",
+"FTP Listados IMS",
+"Usuario 3270"],
+configuracion: [
+"Extracción Datos",
+"Apertura Inventarios Abaco Formato EXCEL / ACCESS",
+"Filtrado Ficheros TXT",
+"Comparación Datos Excel / Access (\" TOTAL COMPARATOR\")",
+"Comparación entre Inventarios de Lotes",
+"Cobertura Mapa Balance",
+"Dar Formato a Fichero Excel",
+"Transposición Fichero Host",
+"Réplica Hoja Plantilla Excel",
+"Desactivar Bloqueo Sesión Windows",
+"Relación MMOO Riesgos con Operación Igom",
+"--- Sesión Recursos Red ---",
+"Reemplazar Cadena en Ficheros de un Directorio",
+"Gestión Espacio (Compresión / BackUp)",
+"Conf. Gestión Espacio (Compresión / BackUp)",
+"Actualizar Ruta de Accesos Directos de un Directorio",
+"Consulta y Restauración Ficheros BackUp",
+"Programar BackUp de Ficheros",
+"Control Espacio",
+"Solicitud de Recuperación Fichero Histórico",
+"Descomprimir Fichero",
+"--- Procesos ---",
+"Procesos. Consulta",
+"Procesos. Consulta y Modificación",
+"Procesos. Verificación",
+"Grupo de Procesos. Consulta y Modificación",
+"Identificador de Procesos. Consulta y Modificación",
+"Procesos. Restaurar",
+"Procesos. Arrancar Servidor Batch",
+"Definición de Grupo de Procesos. Consulta y Modificación",
+"Usuario de Grupo de Procesos. Consulta y Modificación",
+"Mensajes Último Proceso",
+"Prueba",
+"Procesos Locales en Ejecución",
+"Servidores en Ejecución",
+"Usuarios Conectados",
+"--- Sistema CCC ---",
+"Actualizar Versión/Revisión"
+],
+conciliaciones: [
+"--- Conciliaciones de Saldos ---",
+"Clasificación Conciliación de Saldos",
+"Clasificación Auxiliares de Control",
+"Resto de Importaciones",
+"--- Conciliación PG Contabilidad / Control Gestión ---",
+"Importación Movimientos MTO a Fichero Acumulado",
+"Consulta y Gestión de Conciliación"
+]
+
+}
+
+function showMenu(icon,section){
+
+document.querySelectorAll(".icon").forEach(i=>i.classList.remove("active"))
+icon.classList.add("active")
+
+document.getElementById("areaTitle").innerText=icon.innerText.trim()
+
+const panel=document.getElementById("options")
+panel.innerHTML=""
+
+if(!data[section]) return
+
+data[section].forEach(opt=>{
+
+const div=document.createElement("div")
+div.className="option"
+
+const img=document.createElement("img")
+img.src="img/ccc.png"
+
+div.appendChild(img)
+div.appendChild(document.createTextNode(opt))
+
+panel.appendChild(div)
+
+})
+
+}
+
+</script>
+
+</body>
+</html>

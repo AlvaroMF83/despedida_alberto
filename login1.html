@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<style>
+
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#efefef;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+width:420px;
+background:white;
+border-radius:12px;
+padding:40px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+text-align:center;
+}
+
+.logo{
+font-size:42px;
+font-weight:bold;
+color:#072F8C;
+margin-bottom:10px;
+}
+
+.subtitle{
+font-size:24px;
+color:#072F8C;
+margin-bottom:30px;
+}
+
+.lock{
+font-size:60px;
+margin-bottom:20px;
+}
+
+.form-group{
+margin-bottom:20px;
+text-align:left;
+}
+
+label{
+font-size:14px;
+color:#555;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:5px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+button{
+margin-top:20px;
+background:#072F8C;
+color:white;
+border:none;
+padding:12px 30px;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0b3bb0;
+}
+
+</style>
+
+<script>
+
+function abrirLogin2(){
+
+window.open(
+"login2.html",
+"verificacion",
+"width=900,height=600"
+);
+
+window.close();
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">BBVA</div>
+
+<div class="subtitle">Acceso con contraseña</div>
+
+<div class="lock">🔒</div>
+
+<form onsubmit="abrirLogin2(); return false;">
+
+<div class="form-group">
+<label>Nombre de usuario</label>
+<input type="text" value="U216190" readonly>
+</div>
+
+<div class="form-group">
+<label>Contraseña</label>
+<input type="password" placeholder="Introduce contraseña">
+</div>
+
+<button type="submit">Aceptar</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
