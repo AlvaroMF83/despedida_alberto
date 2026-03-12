@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Explorador de archivos</title>
+
+<style>
+
+body{
+margin:0;
+font-family:"Segoe UI", Arial;
+background:#f5f6f8;
+}
+
+/* TOP BAR */
+
+.topbar{
+background:#ffffff;
+border-bottom:1px solid #d0d0d0;
+padding:8px 14px;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+button{
+padding:4px 10px;
+}
+
+/* LAYOUT */
+
+.container{
+display:flex;
+height:calc(100vh - 42px);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:220px;
+background:#ffffff;
+border-right:1px solid #ddd;
+padding:10px;
+font-size:14px;
+}
+
+.sidebar div{
+padding:6px;
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.path{
+padding:10px 20px;
+font-size:14px;
+background:white;
+border-bottom:1px solid #ddd;
+}
+
+/* CONTENT AREA */
+
+.content{
+display:flex;
+flex:1;
+}
+
+/* FILE LIST */
+
+.filelist{
+flex:1;
+padding:10px 20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th,td{
+border-bottom:1px solid #eee;
+padding:8px;
+font-size:14px;
+}
+
+tr:hover{
+background:#f1f4ff;
+cursor:pointer;
+}
+
+.folder::before{content:"📁 ";}
+.file::before{content:"📄 ";}
+
+/* DRIVES */
+
+.drive-grid{
+display:flex;
+flex-wrap:wrap;
+gap:25px;
+}
+
+.drive{
+width:180px;
+cursor:pointer;
+}
+
+.bar{
+height:10px;
+background:#ddd;
+margin-top:4px;
+}
+
+.bar-inner{
+height:10px;
+background:#2d6cdf;
+}
+
+/* RECENT */
+
+.recent{
+width:260px;
+border-left:1px solid #ddd;
+background:white;
+padding:10px;
+}
+
+.recent h3{
+font-size:15px;
+margin-top:0;
+}
+
+.recent-file{
+padding:6px;
+cursor:pointer;
+}
+
+.recent-file:hover{
+background:#f1f4ff;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+<button onclick="goBack()">⬅</button>
+<button onclick="goRoot()">🏠</button>
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+<b>Inicio</b>
+<div>Documentos</div>
+<div>Descargas</div>
+<div>Imágenes</div>
+<div>Escritorio</div>
+<div>Este equipo</div>
+<div>Red</div>
+</div>
+
+<div class="main">
+
+<div id="path" class="path">Este equipo</div>
+
+<div class="content">
+
+<div id="filelist" class="filelist"></div>
+
+<div class="recent">
+<h3>Archivos recientes</h3>
+
+<div class="recent-file file"
+onclick="openExcel()">
+igomonline.xlsx
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ---------- FILE SYSTEM ---------- */
+
+const fs = {
+
+root:{
+type:"drives",
+items:[
+{id:"H",name:"Unidad de red (H:)"},
+{id:"J",name:"0182_0060 (J:)"},
+{id:"J2",name:"APPUPDPT01 (J:)"},
+{id:"L",name:"DATA02_MOV (L:)"},
+{id:"S",name:"ISVP (S:)"},
+{id:"T",name:"SIMP (T:)"},
+{id:"U",name:"U525657 (U:)"},
+{id:"W",name:"APLTES01 (W:)"}
+]
+},
+
+H:{
+type:"folders",
+items:[
+"0-CARPETAS_DATDPT01",
+"BOOKMGR",
+"BOOKMGR2",
+"DATOS_APP",
+"DATOS_AUDIT",
+"DATOS_NNGG",
+"DATOS_PRINT-OPPLUS",
+"DATOS_VIRTUAL",
+"G_OFICINAS",
+"NAVCEN",
+"SC000793",
+"SC003969",
+"TRANSETP",
+"TRANSMI"
+]
+},
+
+SC000793:{
+type:"folders",
+items:[
+"AADivisas",
+"Aapuntes",
+"ALCON",
+"Analisis COMMODITIES",
+"AnalisisBalances",
+"AnalisisMacroMC03",
+"AnalisisMacroMC04",
+"ArchivoGeneral",
+"AUDITORIA EY",
+"BACKUP"
+]
+},
+
+SC003969:{
+type:"folders",
+items:[
+"ARBOL_GESTION",
+"DOCPETICIONES",
+"IGOMONLINE_PLANTILLAS",
+"KANBAN",
+"MANUALES",
+"NIGOL",
+"OFICINAS",
+"PROCESOS",
+"SOFTWARE",
+"TEMP",
+"TEST",
+"XDAIA",
+"ANALISIS_JUSTIGOM_ADA_TEMP.xlsx",
+"Captura pantalla.png",
+"ConsoleApp_test.zip"
+]
+}
+
+}
+
+/* ---------- STATE ---------- */
+
+let history=[]
+let current="root"
+
+/* ---------- NAV ---------- */
+
+function goBack(){
+
+if(history.length===0)return
+
+current=history.pop()
+
+render()
+
+}
+
+function goRoot(){
+
+history=[]
+current="root"
+render()
+
+}
+
+/* ---------- OPEN ---------- */
+
+function openFolder(id){
+
+history.push(current)
+current=id
+render()
+
+}
+
+function openExcel(){
+
+window.open("igomonline.html","_blank")
+
+}
+
+/* ---------- RENDER ---------- */
+
+function render(){
+
+const list=document.getElementById("filelist")
+const path=document.getElementById("path")
+
+list.innerHTML=""
+
+if(current==="root"){
+
+path.innerText="Este equipo"
+
+let grid=document.createElement("div")
+grid.className="drive-grid"
+
+fs.root.items.forEach(d=>{
+
+let div=document.createElement("div")
+div.className="drive"
+
+div.onclick=()=>openFolder(d.id)
+
+div.innerHTML=`
+<div>💽 ${d.name}</div>
+<div class="bar">
+<div class="bar-inner" style="width:${Math.random()*60+30}%"></div>
+</div>
+`
+
+grid.appendChild(div)
+
+})
+
+list.appendChild(grid)
+return
+
+}
+
+path.innerText="Este equipo > "+current
+
+let data=fs[current]
+
+if(!data){
+list.innerHTML="<p>Carpeta vacía</p>"
+return
+}
+
+let table=document.createElement("table")
+
+table.innerHTML=`
+<tr>
+<th>Nombre</th>
+<th>Tipo</th>
+</tr>
+`
+
+data.items.forEach(name=>{
+
+let type=name.includes(".")?"Archivo":"Carpeta de archivos"
+
+let row=document.createElement("tr")
+
+row.innerHTML=`
+<td class="${type.includes('Archivo')?'file':'folder'}">${name}</td>
+<td>${type}</td>
+`
+
+row.onclick=()=>{
+
+if(fs[name]) openFolder(name)
+
+}
+
+table.appendChild(row)
+
+})
+
+list.appendChild(table)
+
+}
+
+/* ---------- INIT ---------- */
+
+render()
+
+</script>
+
+</body>
+</html>

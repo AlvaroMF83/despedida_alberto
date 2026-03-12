@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>IGOM On Line - Simulador</title>
+<style>
+body{
+  margin:0;
+  font-family:Calibri, Arial, sans-serif;
+  background:#a9d3d5;
+}
+
+/* EXCEL TOP BAR */
+.ribbon{
+  background:#f3f3f3;
+  border-bottom:1px solid #cfcfcf;
+  padding:6px 10px;
+  font-size:13px;
+}
+
+.ribbon span{margin-right:18px;}
+
+/* LOGIN */
+.login-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.login{
+  background:#ececec;
+  border:1px solid #9a9a9a;
+  padding:18px 22px;
+  box-shadow:0 6px 15px rgba(0,0,0,.3);
+}
+
+.login input{
+  margin:4px;
+}
+
+/* APP */
+#app{display:none;}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 40px;
+}
+
+.title{
+  font-size:64px;
+  font-style:italic;
+  font-weight:bold;
+  color:#0b2c8a;
+}
+
+.bbva{
+  border:3px solid #0b2c8a;
+  padding:8px 16px;
+  font-weight:bold;
+}
+
+.version{font-size:12px;text-align:center;margin-top:4px;}
+
+.panel{
+  border:3px solid #0b2c8a;
+  margin:20px 40px;
+  padding:10px;
+}
+
+.buttons button{
+  margin:4px;
+  padding:6px 22px;
+}
+
+.sheet-area{
+  background:white;
+  margin:20px;
+  border:2px solid #444;
+}
+
+.sheet-title{
+  font-size:60px;
+  color:#2b2b8f;
+  font-weight:bold;
+  margin:20px;
+}
+
+.table-area{padding:10px;}
+
+table{
+  border-collapse:collapse;
+  width:95%;
+}
+
+th,td{
+  border:1px solid #999;
+  padding:6px;
+  font-size:13px;
+}
+
+th{background:#ddd;}
+
+.tabs{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#e6e6e6;
+  padding:6px;
+  display:flex;
+  gap:6px;
+  border-top:1px solid #aaa;
+}
+
+.tab{
+  background:#d0d0d0;
+  padding:6px 16px;
+  border:1px solid #9a9a9a;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:white;
+  border-bottom:3px solid #0b2c8a;
+}
+
+</style>
+</head>
+<body>
+
+<div class="ribbon">
+<span>Archivo</span>
+<span>Inicio</span>
+<span>Insertar</span>
+<span>Disposición de página</span>
+<span>Fórmulas</span>
+<span>Datos</span>
+<span>Revisar</span>
+<span>Vista</span>
+</div>
+
+<div id="login" class="login-overlay">
+<div class="login">
+<b>Logon</b><br><br>
+Usuario <input><br>
+Password <input type="password"><br><br>
+<button onclick="enter()">Aceptar</button>
+<button>Cancelar</button>
+</div>
+</div>
+
+<div id="app">
+
+<div id="menuScreen">
+
+<div class="header">
+<div class="title">IGOM On Line</div>
+<div>
+<div class="bbva">BBVA</div>
+<div class="version">Versión: 12/01/2024 - PLUS</div>
+</div>
+</div>
+
+<div class="panel">
+<b>Actualización de Productos</b><br><br>
+<div class="buttons">
+<button onclick="openSheet('BAJA')">BAJA</button><br>
+<button onclick="openSheet('MODIF IMPORTES')">MODIF IMPORTES</button>
+</div>
+</div>
+
+<div class="panel" style="width:620px">
+<b>Alta por Productos</b><br><br>
+<div class="buttons">
+<button onclick="openSheet('OPV')">OPV</button>
+<button onclick="openSheet('CVD')">CVD</button>
+<button onclick="openSheet('OMO')">OMO</button>
+<button onclick="openSheet('DEP')">DEP</button><br>
+<button onclick="openSheet('IRS')">IRS</button>
+<button onclick="openSheet('EQF')">EQF</button>
+<button onclick="openSheet('CAR(RV)')">CAR(RV)</button>
+<button onclick="openSheet('EMP')">EMP</button><br>
+<button onclick="openSheet('CVS')">CVS</button>
+<button onclick="openSheet('FUT')">FUT</button>
+<button onclick="openSheet('CAR(RF)')">CAR(RF)</button>
+<button onclick="openSheet('REP')">REP</button><br>
+<button onclick="openSheet('OSW')">OSW</button>
+<button onclick="openSheet('FRA')">FRA</button>
+<button onclick="openSheet('AVA')">AVA</button>
+<button onclick="openSheet('GAR')">GAR</button><br>
+<button onclick="openSheet('OTI')">OTI</button>
+<button onclick="openSheet('OFX')">OFX</button>
+<button onclick="openSheet('CDS')">CDS</button>
+<button onclick="openSheet('CMS')">CMS</button>
+</div>
+</div>
+
+</div>
+
+<div id="sheetScreen" style="display:none">
+
+<div class="sheet-area">
+<div id="sheetTitle" class="sheet-title">OPV</div>
+<div class="table-area">
+<table>
+<tr>
+<th>NºReg</th>
+<th>BANCO</th>
+<th>OFICINA</th>
+<th>PRODUCTO</th>
+<th>CODIGO OPERACION</th>
+<th>ISIN</th>
+<th>STRIKE</th>
+<th>FECHA PROX EJEC</th>
+<th>USUARIO</th>
+</tr>
+<tr><td>00036</td><td>0182</td><td>0060</td><td class="prod">OPV</td><td>VCA</td><td></td><td></td><td></td><td>E035635</td></tr>
+<tr><td>00037</td><td>0182</td><td>0060</td><td class="prod">OPV</td><td>VCA</td><td></td><td></td><td></td><td>E035635</td></tr>
+<tr><td>00038</td><td>0182</td><td>0060</td><td class="prod">OPV</td><td>VCA</td><td></td><td></td><td></td><td>E035635</td></tr>
+<tr><td>00039</td><td>0182</td><td>0060</td><td class="prod">OPV</td><td>VCA</td><td></td><td></td><td></td><td>E035635</td></tr>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="goMenu(this)">Menú</div>
+<div class="tab" onclick="openSheet('Baja',this)">Baja</div>
+<div class="tab" onclick="openSheet('Modificación',this)">Modificación</div>
+<div class="tab" onclick="openSheet('OPV',this)">OPV</div>
+<div class="tab" onclick="openSheet('IRS',this)">IRS</div>
+<div class="tab" onclick="openSheet('CVS',this)">CVS</div>
+<div class="tab" onclick="openSheet('OSW',this)">OSW</div>
+<div class="tab" onclick="openSheet('OTI',this)">OTI</div>
+</div>
+
+<script>
+
+function enter(){
+ document.getElementById('login').style.display='none'
+ document.getElementById('app').style.display='block'
+}
+
+function setActive(tab){
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
+ if(tab) tab.classList.add('active')
+}
+
+function goMenu(tab){
+ setActive(tab)
+ document.getElementById('sheetScreen').style.display='none'
+ document.getElementById('menuScreen').style.display='block'
+}
+
+function openSheet(name,tab){
+ setActive(tab)
+ document.getElementById('menuScreen').style.display='none'
+ document.getElementById('sheetScreen').style.display='block'
+ document.getElementById('sheetTitle').innerText=name
+ document.querySelectorAll('.prod').forEach(p=>p.innerText=name)
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Correo</title>
+
+<style>
+
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#f6f8fc;
+color:#202124;
+}
+
+/* HEADER */
+
+.header{
+height:64px;
+background:white;
+display:flex;
+align-items:center;
+padding:0 16px;
+border-bottom:1px solid #ddd;
+gap:14px;
+}
+
+.gmail-logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.search{
+flex:1;
+display:flex;
+justify-content:center;
+}
+
+.search input{
+width:60%;
+max-width:700px;
+padding:12px 18px;
+border-radius:24px;
+border:1px solid #dadce0;
+background:#f1f3f4;
+}
+
+/* LAYOUT */
+
+.container{
+display:flex;
+height:calc(100vh - 64px);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:260px;
+background:white;
+border-right:1px solid #e0e0e0;
+padding:12px;
+overflow:auto;
+}
+
+.compose{
+background:#c2e7ff;
+border-radius:20px;
+padding:12px;
+text-align:center;
+font-weight:bold;
+margin-bottom:16px;
+}
+
+.menu-item{
+display:flex;
+justify-content:space-between;
+padding:8px 12px;
+border-radius:18px;
+font-size:14px;
+}
+
+.menu-item.active{
+background:#e8f0fe;
+font-weight:bold;
+}
+
+.label{
+display:flex;
+justify-content:space-between;
+padding:6px 12px;
+font-size:13px;
+color:#444;
+}
+
+/* MAIL AREA */
+
+.mail-area{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.mail-list{
+overflow:auto;
+flex:1;
+}
+
+/* MAIL ROW */
+
+.mail-row{
+display:grid;
+grid-template-columns:30px 30px 220px 1fr 70px;
+align-items:center;
+gap:8px;
+padding:9px 14px;
+border-bottom:1px solid #eee;
+background:white;
+font-size:14px;
+cursor:pointer;
+}
+
+.mail-row:hover{
+background:#f5f5f5;
+}
+
+.sender{
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.subject{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+color:#444;
+}
+
+.time{
+text-align:right;
+font-size:13px;
+color:#666;
+}
+
+.unread .sender{
+font-weight:bold;
+}
+
+.unread .subject{
+font-weight:bold;
+}
+
+/* TAGS */
+
+.tag{
+padding:2px 6px;
+border-radius:4px;
+font-size:11px;
+font-weight:bold;
+}
+
+.blue{background:#1a73e8;color:white;}
+.green{background:#1e8e3e;color:white;}
+.yellow{background:#fbbc04;color:black;}
+.orange{background:#f4511e;color:white;}
+.purple{background:#9334e6;color:white;}
+.red{background:#d93025;color:white;}
+
+/* EMAIL VIEW */
+
+.email-view{
+display:none;
+padding:40px;
+background:white;
+height:100%;
+overflow:auto;
+}
+
+.back{
+color:#1a73e8;
+cursor:pointer;
+margin-bottom:20px;
+display:inline-block;
+font-size:14px;
+}
+
+.email-body{
+max-width:800px;
+line-height:1.6;
+white-space:pre-line;
+}
+
+.nav{
+margin-bottom:20px;
+}
+
+.nav button{
+margin-right:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<div class="gmail-logo">📧 Gmail</div>
+
+<div class="search">
+<input type="text" placeholder="Buscar correo">
+</div>
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+
+<div class="compose">Redactar</div>
+
+<div class="menu-item active">Recibidos <span>297</span></div>
+<div class="menu-item">Destacados</div>
+<div class="menu-item">Pospuestos</div>
+<div class="menu-item">Importantes</div>
+<div class="menu-item">Enviados</div>
+<div class="menu-item">Borradores <span>60</span></div>
+
+<hr>
+
+<b>Etiquetas</b>
+
+<div class="label">### !!! ALERTA !!! ### <span>21</span></div>
+<div class="label">ABACO</div>
+<div class="label">AGC <span>129</span></div>
+<div class="label">AGILE</div>
+<div class="label">ALCON</div>
+<div class="label">AMF <span>14</span></div>
+<div class="label">AMIGA</div>
+<div class="label">AOD</div>
+<div class="label">ATHENA</div>
+<div class="label">AUDITORIA <span>2</span></div>
+<div class="label">BALANCENETEO</div>
+<div class="label">BBC</div>
+<div class="label">NETEO</div>
+<div class="label">NEOCON</div>
+<div class="label">MPL</div>
+
+</div>
+
+<div class="mail-area">
+
+<div id="inbox" class="mail-list">
+
+<!-- AQUÍ SE INSERTAN LOS MENSAJES AUTOMÁTICOS -->
+
+</div>
+
+
+<div id="emailView" class="email-view">
+
+<div class="back" onclick="closeMail()">← Volver a Recibidos</div>
+
+<div class="nav">
+<button onclick="prevMail()">Anterior</button>
+<button onclick="nextMail()">Siguiente</button>
+</div>
+
+<div class="email-body">
+
+<h2 id="mailTitle"></h2>
+
+<p><b>De:</b> <span id="mailSender"></span></p>
+
+<br>
+
+<div id="mailContent"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* LISTA DE MENSAJES */
+
+
+
+const mails = [
+  {
+    sender: "GAIZKA ISUSI APRAIZ",
+    tag: "REGULATORY REPORTING",
+    title: "Se va un grande",
+    content: `Se va un grande. Cuanto más te he conocido, más te he apreciado, tanto personal como profesionalmente. Disfruta la nueva etapa.`
+  },
+  {
+    sender: "AITOR VILLAGRA VIANA",
+    tag: "SOLUTIONS DEVELOPMENT",
+    title: "Un placer haber coincidido contigo",
+    content: `Alberto, un placer haber coincidido contigo . Un profesional serio y trabajador. Espero que te vaya todo muy bien. Un abrazo`
+  },
+  {
+    sender: "ANA GARCIA MESEGUER",
+    tag: "SOLUTIONS DEVELOPMENT",
+    title: "Prueba",
+    content: `Prueba`
+  },
+  {
+    sender: "ALVARO DEL MONTE FREITAS",
+    tag: "FINANCIAL DATA",
+    title: "Prueba",
+    content: `Prueba`
+  },
+  {
+    sender: "ANDREW IDUH",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Estrés y risas contigo",
+    content: `Alberto, ha sido un placer compartir estrés y risas contigo todo este tiempo desde el 2020 que me quede solo en la oficina contigo por el Covid. Me da pena que te vayas, pero me alegra mucho ver que todo te irá mucho mejor ahora. Gracias por ser un gran compañero y, sobre todo, por ser una gran persona. ¡Seguimos en contacto! Y ya te iré contando mis novedades con mis coches, jajaja. Un fuerte abrazo.
+Andrew`
+  },
+  {
+    sender: "ANTONIO MARTINEZ GILABERT",
+    tag: "SOLUTIONS DEVELOPMENT",
+    title: "Has dejado huella",
+    content: `Alberto, las personas que luchan por hacer las cosas bien dejan huella, y tú la has dejado en todos nosotros. Gracias por estos años y mucha suerte en tu nueva etapa.`
+  },
+  {
+    sender: "BEATRIZ AGUADO SERRANO",
+    tag: "PLANIFICACION DEFINICION Y CONTROL CONTA",
+    title: "Todo lo mejor para esta nueva etapa",
+    content: `Te deseo todo lo mejor para esta nueva etapa y que la disfrutes con optimismo y alegría dado que tienes una nueva oportunidad de reinventarte y hacer lo que más te guste. Ha sido un lujo haberte conocido a nivel personal y profesional. Con todo mi cariño Beatriz, ya sabes dónde me dejas para todo lo que necesites.`
+  },
+  {
+    sender: "CARMEN GARCIA CUEVAS",
+    tag: "RED EXTERIOR",
+    title: "Las palmeras de chocolate te esperan",
+    content: `Espero que te vaya fenomenal, que descanses y que disfrutes sin que te demos la lata. ¡¡¡Las palmeras de chocolate te esperan fueran del Central!!! Carmen`
+  },
+  {
+    sender: "CONRADO SAEZ SEPTIEN",
+    tag: "SOLUTIONS DEVELOPMENT",
+    title: "Gracias por ayudar siempre",
+    content: `Albreto, gracias por ayudar siempre que hemos necesitado de tus conocimientos has estado disponible y eso en los tiempos que corren es muy valioso. Enhorabuena y a dsifrutar de esta nueva etapa!`
+  },
+  {
+    sender: "DAVID GONZALEZ VAZQUEZ",
+    tag: "MERCADOS FINANCIEROS",
+    title: "La persona más importante de CdM",
+    content: `Hace poco comentaba que eras la persona más importante de CdM y eso que no eres ni de Contabilidad. Ese es el resumen de una de las personas que creo que más han hecho por ese mundo tan complejo como el de Mercados. Por el bien de los que nos quedamos, espero que no nos acordemos de ti en el corto plazo ;-). Gracias por estos años en los que te has sacrificado para que el resto podamos sobrevivir. Ahora llega el momento de disfrutar de ese tiempo libre, que entre todos, te hemos quitado. Un abrazo! David`
+  },
+  {
+    sender: "ELIXABET OSA FERNANDEZ",
+    tag: "FINANCIAL DATA",
+    title: "Te deseo lo mejor",
+    content: `Te deseo lo mejor en esta nueva etapa`
+  },
+  {
+    sender: "JUAN CARLOS ORTIZ CARRANCE",
+    tag: "RED EXTERIOR",
+    title: "Siempre dispuesto a ayudar",
+    content: `Ha sido un placer poder trabajar contigo, siempre dispuesto a ayudar y a mejorar las cosas.
+Te deseo lo mejor para esta nueva etapa.
+Un abrazo,`
+  },
+  {
+    sender: "MARIA SOLOZABAL APELLANIZ",
+    tag: "FINANCIAL DATA",
+    title: "Gracias por compartir todo lo que sabes",
+    content: `Gracias por compartir todo lo que sabes. ¡Ahora te toca iniciar otra etapa muy merecida! ¡Disfrútala!`
+  },
+  {
+    sender: "MONICA GONZALEZ RODRIGUEZ",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Qué gran suerte haber coincidido contigo",
+    content: `Alberto qué gran suerte haber coincidido tantos años contigo, un gran profesional que nos ha facilitado la vida en mil ocasiones con una forma de ser que a mi me alegraba el día. Te vamos a echar mucho de menos y te deseo mucha suerte en tu "nueva vida". Un abrazo grande!!`
+  },
+  {
+    sender: "PABLO ANTONIO SANZ RINCON",
+    tag: "SOLVENCIA Y REPORTING SUPRANACIONAL",
+    title: "A mi querido Trabuco",
+    content: `A mi querido Trabuco, que te vaya fenomenal en esta nueva etapa. Te echaré mucho de menos. Un fuerte abrazo`
+  },
+  {
+    sender: "PEDRO GOMEZ TEJERINA",
+    tag: "FINANCIAL DATA",
+    title: "Lo mejor en esta nueva etapa",
+    content: `Alberto,
+
+Aunque no hemos trabajado mucho juntos, quería aprovechar para desearte lo mejor en esta nueva etapa. Las veces que hemos coincidido el trato siempre ha sido muy bueno y da gusto encontrarse con gente así en el día a día.
+
+Que te vaya todo genial en lo que venga ahora y que lo disfrutes mucho.
+
+¡Un abrazo y mucha suerte!
+Pedro Gómez.`
+  },
+  {
+    sender: "GERMAN FIERRO CASTRO",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Solo una palabra: gracias",
+    content: `Alberto, solo se me viene a la mente una palabra GRACIAS. Gracias por tu apoyo, gracias por tu ayuda, por tu compromiso en realizar un trabajo impecable, por tus conocimientos infinitos. Gracias por ser un ejemplo de lo que debe ser un profesional y sobre todo gracias por ser una excelente persona.`
+  },
+  {
+    sender: "JOSE CARLOS GONZALEZ SANCHEZ",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Un orgullo haber compartido contigo",
+    content: `En estas fechas tan señaladas me llena de orgullo y satisfacción haber compartido contigo momentos agradables. Tu profesionalidad ya es más que conocida así que me gustaría sobre todo destacar lo humano que, sin duda ha hecho mucho mejor las horas que hemos compartido y, que sin trabajar espero se puedan continuar.`
+  },
+  {
+    sender: "JOSU ALVARO MACIA",
+    tag: "GESTION DE COSTES",
+    title: "Un placer haber coincidido contigo",
+    content: `Alberto, te mando un fuerte abrazo y lo mejor para esta nueva etapa. Un placer haber coincidido contigo. Josu`
+  },
+  {
+    sender: "MARTA MUÑOA PEREDA",
+    tag: "SOLUTIONS DEVELOPMENT",
+    title: "Un placer haber compartido estos ratitos",
+    content: `Un placer haber compartido "estos ratitos" profesionales contigo. Te deseo todo lo mejor.`
+  },
+  {
+    sender: "ALMUDENA MARTIN GARCIA",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Un auténtico placer trabajar cerca de ti",
+    content: `Ha sido un auténtico placer trabajar cerca de ti. Gracias por ser esa pieza clave que nos ha facilitado tanto el día a día para sacar el trabajo adelante.`
+  },
+  {
+    sender: "ANA CARNAL MARTIN",
+    tag: "PLANIFICACION DEFINICION Y CONTROL CONTA",
+    title: "Muchas gracias por tu valiosa aportación",
+    content: `Muchas gracias Alberto por tu valiosa aportación y apoyo durante todos estos años. Disfruta mucho de esta nueva etapa. Un abrazo!!`
+  },
+  {
+    sender: "ANDRES ARROYO PAULET",
+    tag: "NEOCON",
+    title: "Aprendí muchísimo de ti",
+    content: `Muchísimas gracias por los años en el que has sido mi responsable.. fueron una época que valoro especialmente y donde aprendí muchísimo de ti. Has sido un profesional de un nivel espectacular y aun mejor persona.. ¡¡espero que te vaya genial en el futuro!!`
+  },
+  {
+    sender: "CECILIA CIANCIA SERRA",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Gracias por tu paciencia",
+    content: `Gracias por tu paciencia en todos estos años; mis mejores deseos para la nueva etapa.`
+  },
+  {
+    sender: "ELADIO CAMPOS BORJA",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Después de tantas batallas y trincheras",
+    content: `Alberto, después de tantas batallas y trincheras el soldado se retira a misiones más placenteras y seguro que más agradecidas en todos los sentidos, suerte en la nueva etapa, esto se dice siempre, pero en este caso como el cambio va a ser para mucho mejor no la vas a necesitar, disfruta de la libertad!!! ha sido un honor combatir con usted!`
+  },
+  {
+    sender: "FATIMA LOPEZ MARTIN",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Ahora toca disfrutar",
+    content: `Te deseo lo mejor en esta nueva etapa que comienzas, ahora toca disfrutar! Un abrazo. Fátima`
+  },
+  {
+    sender: "GEMA MAGRO PEREZ",
+    tag: "SOLVENCIA Y REPORTING SUPRANACIONAL",
+    title: "Personas como tú dejan huella",
+    content: `Alberto, muchas gracias por estar siempre ahí para ayudar, por compartir tu conocimiento y por apoyarnos siempre que lo hemos necesitado. Personas como tu dejan huella!!
+
+Se te va a echar mucho de menos por aquí, pero me alegro de que ahora empieces una nueva etapa en la que seguro vas a disfrutar mas! 
+
+Te deseo lo mejor! :-D`
+  },
+  {
+    sender: "ISMAEL GONZALEZ RICO",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Un placer haber trabajado contigo",
+    content: `Un placer haber trabajado contigo. Mucha suerte para esta nueva etapa personal! un abrazo. Ismael.`
+  },
+  {
+    sender: "ITZIAR ALAVA PEREZ",
+    tag: "FINANCIAL DATA",
+    title: "Que vaya todo fenomenal",
+    content: `Alberto, disfruta de esta nueva etapa, que vaya todo fenomenal!!`
+  },
+  {
+    sender: "IVAN FERNANDEZ GUTIERREZ",
+    tag: "NEOCON",
+    title: "Gracias por haber confiado en mí",
+    content: `Gracias por haber confiado en mi para ser parte de tu equipo. Un placer haber aprendido de ti y trabajado codo a codo. Te esperan cosas mucho mejores seguro, se feliz.`
+  },
+  {
+    sender: "JORGE MENDEZ GONZALEZ",
+    tag: "FINANCE GM EUROPA - FINANCIAL PLANNING & PERFORMANCE",
+    title: "Gran parte de mi conocimiento te lo debo a ti",
+    content: `Gran parte de mi conocimiento te lo debo a tí y tu compromiso por ayudar. Gracias por todo Alberto y me alegro mucho por tí. Un abrazo fuerte`
+  },
+  {
+    sender: "JULIO ROBLES GONZALEZ",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Tu criatura CCC nos ha salvado la vida",
+    content: `Alberto,
+
+Después de tantos años cruzándonos en diferentes etapas desde aquel mayo de 2003, se hace raro escribir un mensaje de despedida. Han sido muchos momentos compartidos y, sobre todo, la suerte de trabajar con alguien que siempre ha estado dispuesto a ayudar.
+
+Si algo te define es tu enorme conocimiento, tu rigor y ese orden casi legendario que te caracteriza (probablemente seas la persona más ordenada que conozco). Siempre has estado ahí cuando hacía falta, y tu criatura "CCC" nos ha salvado la vida en innumerables ocasiones.
+
+Vamos a echar mucho de menos tu profesionalidad, tu cercanía… y también algún que otro gruñido, que ya forma parte de tu marca personal.
+
+Ha sido un verdadero placer trabajar contigo todos estos años y te agradezco todo lo que me has enseñado. Te deseo lo mejor en esta nueva etapa, que seguro estará llena de buenos momentos.
+
+Un fuerte abrazo y desearte que seas feliz ??`
+  },
+  {
+    sender: "LAURA GONZALEZ RODRIGUEZ",
+    tag: "MERCADOS FINANCIEROS",
+    title: "Un gran referente",
+    content: `Querido Alberto,
+
+No te voy a mentir, me da muchísima pena que te vayas. Para mí, el departamento pierde a uno de sus pilares fundamentales, pero sobre todo, yo pierdo a un gran referente.
+
+Te agradezco de corazón que, por muy ocupado que estuvieras, nunca tuvieras un 'no' por respuesta. He aprendido muchísimo de ti, no solo de trabajo, sino de esa generosidad y paciencia que te hacen tan especial. Gracias por todas las veces que me has 'salvado la vida' (¡que no han sido pocas! jaja) y por cada momento compartido.
+
+Te deseo todo lo mejor en esta nueva etapa. Te mereces disfrutar de cada segundo de tu tiempo y que te pasen solo cosas bonitas. ¡¡Disfruta muchísimo!! Lau.`
+  },
+  {
+    sender: "LOLA MOYA REBATE",
+    tag: "SOLUTIONS DEVELOPMENT",
+    title: "Después de 20 años compartiendo aventuras",
+    content: `¡Alberto! Después de 20 años compartiendo aventuras laborales, cafés y más de un “esto es urgente”, o "por favor, necesito tu ayuda", solo puedo decirte gracias. Gracias por tu profesionalidad impecable, por tu criterio siempre sensato y, sobre todo, por ser aún mejor persona. Dejas el listón altísimo… pero también dejas el ejemplo. Disfruta esta nueva etapa sin madrugones ni correos a deshora: te la has ganado con creces.
+
+Un abrazo, Lola`
+  },
+  {
+    sender: "ROSA BARRENA ITURBE",
+    tag: "FINANCIAL DATA",
+    title: "Zorionak Alberto",
+    content: `Zorionak Alberto, disfruta a tope de esta nueva etapa!`
+  },
+  {
+    sender: "IRENE RUIZ MUÑOZ",
+    tag: "RED EXTERIOR",
+    title: "Se me acabó el enchufe",
+    content: `Se me acabó el "enchufe"... Alberto, muchas gracias por toda tu ayuda estos años, se acabó "el teléfono de la esperanza...". Eres una persona excepcional y un COMPAÑERO. Ya sabes que te vamos a echar mucho de menos. Seguiremos desayunando los viernes, como Dios manda, así que, te esperamos por aquí... Un abrazo. Irene`
+  },
+  {
+    sender: "ALVARO SMITH ALDECOA",
+    tag: "FINANCIAL DATA",
+    title: "Que vaya fenomenal en esta nueva etapa",
+    content: `Que vaya fenomenal en esta nueva etapa, Alberto! Ha sido un placer coincidir contigo.
+Un fuerte abrazo,
+Álvaro Smith`
+  },
+  {
+    sender: "LAURA LASO DELGADO",
+    tag: "TAX SPAIN",
+    title: "A disfrutar al máximo de tu tiempo",
+    content: `Te deseo lo mejor en tu nueva etapa! A disfrutar al máximo de tu tiempo, Saludos Laura`
+  },
+  {
+    sender: "JAVIER CABALLERO FDEZ. DE LABASTIDA",
+    tag: "SOLUTIONS DEVELOPMENT",
+    title: "La mejor aplicación del banco",
+    content: `Para el creador de la mejor aplicación del banco después de la App; si el Centro de Software admitiera valoraciones, CCC tendría mi 5`
+  },
+  {
+    sender: "LUIS GARCIA HERIZ",
+    tag: "EFAN",
+    title: "Enhorabuena y a disfrutar",
+    content: `Enhorabuena Alberto y a disfrutar!!`
+  },
+  {
+    sender: "ALBERTO BLANCO EXPOSITO",
+    tag: "FINANCIAL DATA",
+    title: "Entre Financial Data y Contabilidad",
+    content: `?
+Entre Financial Data y CONTABILIDAD,
+Alberto Gómez Castro fue pura fiabilidad.
+Del IGOM al CCC trazó siempre el mejor camino,
+con la APLICACIÓN en orden y el FICHERO por destino.
+
+Con IGOM ON LINE y LOTES sostuvo más de un temporal,
+y a la CUENTA contable dio un trato casi celestial.
+Ábaco, Calypso, Murex, EXCEL y Sistemas también,
+sabían que, estando Alberto, todo acababa siempre bien.
+
+ADA y la PLATAFORMA INFORMACIONAL fueron testigo fiel
+de ese talento silencioso que nunca buscó LAUREL.
+Porque donde otros veían lío, ajuste, error o estrés,
+él ponía calma, cabeza… y queries que generaban ficheros Excel.
+
+Hoy se marcha, y aunque todo seguirá con seriedad,
+ya sabemos que no será exactamente igual.
+Porque hay personas que dejan huella por su entrega y su rigor…
+y otras, además, porque con su dedicación han dejado mucho VALOR.
+
+Así que no es un adiós del todo, sino un elegante hasta luego:
+te vas tú… y nos dejas a nosotros con Murex, los LOTES..... y el FUEGO.......`
+  },
+  {
+    sender: "JUAN LOPEZ DALI",
+    tag: "RED EXTERIOR",
+    title: "Gracias por todo lo que nos has enseñado",
+    content: `Más allá de ser un referente en IGOM, siempre has estado ahí para ayudar y apoyar al equipo. Muchas gracias por todo lo que nos has enseñado y aportado.`
+  },
+  {
+    sender: "PEDRO RIVERA GONZALEZ",
+    tag: "SUSTAINABILITY - ACCOUNTING & REPORTING",
+    title: "Nos vemos en El Ganso",
+    content: `Querido amigo, aunque hace ya tiempo que no coincidimos, siempre te recordaré como una de las personas con las que ha merecido la pena colaborar y conocer. Seguro que a partir de ahora sacas más tiempo para tener arreglada la casa de El Ganso, así que cualquier verano de estos me acerco por alli. Un gran abrazo`
+  },
+];
+
+
+
+/* CORREOS DE RELLENO */
+
+const fillerMails=[
+{sender:"ALBERTO, ANTONIO",subject:`<span class="tag yellow">AGC</span><span class="tag blue">CCC2022</span><span class="tag green">EN ESTUDIO</span> Re: [ESP] Revisión etiquetado CI UAA`,time:"18:37"},
+{sender:"yo",subject:`<span class="tag blue">BALANCENETEO</span><span class="tag yellow">GMP</span><span class="tag yellow">MPL</span><span class="tag green">TERMINADA</span> NETEO BALANCE / UNIDAD DE CUENTA NEGOCIACIÓN`,time:"16:54"},
+{sender:"OPPLUS",subject:`<span class="tag yellow">GMP</span><span class="tag purple">INFRAESTRUCTURA</span><span class="tag yellow">MPL</span><span class="tag green">TERMINADA</span> Fichero PI_POSIRF_DIARIO`,time:"12:18"},
+{sender:"NORMA",subject:`<span class="tag purple">INFRAESTRUCTURA</span><span class="tag green">TERMINADA</span> Resultados pruebas UAT`,time:"10:55"},
+{sender:"DAVID",subject:`<span class="tag yellow">AGC</span><span class="tag green">TERMINADA</span> UNICO – soluciones propuestas`,time:"10:22"},
+{sender:"FRANCISCO",subject:`<span class="tag purple">TRADING</span><span class="tag green">TERMINADA</span> OCCAs Febrero`,time:"09:45"},
+{sender:"LAURA",subject:`<span class="tag yellow">MPL</span><span class="tag green">TERMINADA</span> Inventario derivados`,time:"09:15"},
+{sender:"JOSE",subject:`<span class="tag yellow">AGC</span><span class="tag blue">BALANCENETEO</span> Ajuste unidad cuenta cierre`,time:"08:50"},
+{sender:"IVAN",subject:`<span class="tag blue">WebFOCUS</span><span class="tag green">TERMINADA</span> Error acceso informe contabilidad`,time:"08:15"}
+];
+
+let currentMail = 0;
+
+/* GENERAR INBOX */
+
+function renderInbox(){
+
+const inbox=document.getElementById("inbox");
+
+mails.forEach((mail,index)=>{
+
+const row=document.createElement("div");
+
+row.className="mail-row unread";
+
+row.innerHTML=`
+<div>☐</div>
+<div>☆</div>
+<div class="sender">${mail.sender}</div>
+<div class="subject">
+<span class="tag blue">PERSONAL</span>
+<span class="tag green">IMPORTANTE</span>
+<span class="tag yellow">${mail.tag}</span>
+${mail.title}
+</div>
+<div class="time">Ahora</div>
+`;
+
+row.onclick=()=>openMail(index);
+
+inbox.appendChild(row);
+
+});
+
+/* relleno */
+
+fillerMails.forEach(mail=>{
+
+const row=document.createElement("div");
+row.className="mail-row";
+
+row.innerHTML=`
+<div>☐</div>
+<div>☆</div>
+<div class="sender">${mail.sender}</div>
+<div class="subject">${mail.subject}</div>
+<div class="time">${mail.time}</div>
+`;
+
+inbox.appendChild(row);
+
+});
+
+}
+
+/* ABRIR MAIL */
+
+function openMail(index){
+
+currentMail=index;
+
+document.getElementById("inbox").style.display="none";
+document.getElementById("emailView").style.display="block";
+
+loadMail();
+
+}
+
+function loadMail(){
+
+const mail=mails[currentMail];
+
+document.getElementById("mailTitle").innerText=mail.title;
+document.getElementById("mailSender").innerText=mail.sender;
+document.getElementById("mailContent").innerHTML=mail.content;
+
+}
+
+function closeMail(){
+
+document.getElementById("emailView").style.display="none";
+document.getElementById("inbox").style.display="block";
+
+}
+
+function nextMail(){
+
+if(currentMail < mails.length-1){
+currentMail++;
+loadMail();
+}
+
+}
+
+function prevMail(){
+
+if(currentMail > 0){
+currentMail--;
+loadMail();
+}
+
+}
+
+renderInbox();
+
+</script>
+
+</body>
+</html>

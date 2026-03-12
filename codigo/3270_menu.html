@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sesión A - [24 x 80]</title>
+
+<style>
+
+html,body{
+margin:0;
+height:100%;
+background:black;
+font-family:Consolas,"Lucida Console","Courier New",monospace;
+}
+
+/* ventana */
+
+.window{
+display:flex;
+flex-direction:column;
+height:100%;
+}
+
+/* barras superiores */
+
+.titlebar{
+background:#e6e6e6;
+padding:6px 10px;
+font-size:14px;
+border-bottom:1px solid #bbb;
+}
+
+.menu{
+background:#f4f4f4;
+padding:4px 10px;
+border-bottom:1px solid #ccc;
+font-size:13px;
+}
+
+.menu span{
+margin-right:16px;
+}
+
+.connection{
+background:#efefef;
+padding:6px 10px;
+border-bottom:1px solid #ccc;
+font-size:13px;
+}
+
+/* terminal */
+
+.terminal{
+flex:1;
+background:black;
+color:#00ff00;
+padding:20px 60px;
+white-space:pre;
+line-height:1.4;
+font-size:17px;
+overflow:auto;
+}
+
+/* colores 3270 */
+
+.cyan{color:#4ff6ff;}
+.green{color:#00ff00;}
+.yellow{color:#ffff00;}
+.white{color:#ffffff;}
+
+/* input */
+
+input{
+background:black;
+border:none;
+border-bottom:1px solid #00ff00;
+color:#00ff00;
+font-family:inherit;
+font-size:17px;
+width:200px;
+outline:none;
+}
+
+/* footer */
+
+.footer{
+background:#e6e6e6;
+padding:6px 10px;
+font-size:12px;
+border-top:1px solid #bbb;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="window">
+
+<div class="titlebar">
+Sesión A - [24 x 80]
+</div>
+
+<div class="menu">
+<span>Archivo</span>
+<span>Edición</span>
+<span>Vista</span>
+<span>Comunicación</span>
+<span>Acciones</span>
+<span>Ventana</span>
+<span>Ayuda</span>
+</div>
+
+<div class="connection">
+Sistema principal:
+<input value="tnbbva-anycast">
+Puerto:
+<input value="23" style="width:40px">
+Nombre de LU:
+<input value="TN108222">
+<button>Desconexión</button>
+</div>
+
+<div class="terminal">
+
+<span class="yellow">                    MENU DE FACILIDADES DISPONIBLES</span>                         <span class="cyan">More:</span>
+
+<span class="cyan">
+Pulse <span class="yellow">S</span> para iniciar o <span class="yellow">T</span> para terminar en la linea de las facilidades,o
+desde linea de Comando añadiendo el nombre de la facilidad.
+</span>
+
+<span class="cyan">     Facilidad   Descripcion                     Estado</span> 
+<span class="cyan">     ---------   -------------------------------  ------------</span>
+
+<span class="green">    -</span> <span class="white">CEIN</span>       <span class="white">Centro de Informacion</span>           <span class="white">Inactiva</span> 
+<span class="green">    -</span> <span class="white">COIN</span>       <span class="white">Contabilidad Internacional</span>      <span class="white">Activa</span> 
+<span class="green">    -</span> <span class="white">GEPC</span>       <span class="white">Gest. Prob/Peticiones/Cambios</span>   <span class="white">Activa</span>
+
+<span class="cyan">Comando ===> </span><input id="cmd">
+
+<span class="yellow">Enter   F1=Ayuda   F3=Salir   F12=Salir</span>                                       <span class="cyan">U216190/TN108222</span>
+
+</div>
+
+<div class="footer">
+Conectado a un sistema principal/servidor remoto tnbbva-anycast utilizando una agrupación/lu TN108222 y un puerto 23
+</div>
+
+</div>
+
+
+</body>
+</html>

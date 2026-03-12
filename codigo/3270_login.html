@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sesión A - [24 x 80]</title>
+
+<style>
+
+html, body{
+height:100%;
+margin:0;
+font-family:Segoe UI, Arial;
+background:black;
+}
+
+/* ventana */
+
+.window{
+display:flex;
+flex-direction:column;
+height:100%;
+}
+
+/* barra superior */
+
+.titlebar{
+background:#e6e6e6;
+padding:6px 10px;
+font-size:14px;
+border-bottom:1px solid #bbb;
+}
+
+.menu{
+background:#f4f4f4;
+padding:4px 10px;
+border-bottom:1px solid #ccc;
+font-size:13px;
+}
+
+.menu span{
+margin-right:16px;
+}
+
+/* conexión */
+
+.connection{
+background:#efefef;
+padding:6px 10px;
+border-bottom:1px solid #ccc;
+font-size:13px;
+}
+
+/* terminal */
+
+.terminal{
+flex:1;
+background:black;
+color:#00ff00;
+font-family:"Courier New", monospace;
+font-size:16px;
+padding:20px 40px;
+white-space:pre;
+overflow:auto;
+}
+
+/* colores */
+
+.cyan{color:#55f0ff;}
+.green{color:#00ff00;}
+.red{color:#ff3a3a;}
+.white{color:#ffffff;}
+.yellow{color:#ffff00;}
+
+/* inputs */
+
+input{
+background:black;
+border:none;
+border-bottom:1px solid #00ff00;
+color:#00ff00;
+font-family:"Courier New", monospace;
+font-size:16px;
+outline:none;
+}
+
+/* footer */
+
+.footer{
+background:#e6e6e6;
+padding:6px 10px;
+font-size:12px;
+border-top:1px solid #bbb;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="window">
+
+<div class="titlebar">
+Sesión A - [24 x 80]
+</div>
+
+<div class="menu">
+<span>Archivo</span>
+<span>Edición</span>
+<span>Vista</span>
+<span>Comunicación</span>
+<span>Acciones</span>
+<span>Ventana</span>
+<span>Ayuda</span>
+</div>
+
+<div class="connection">
+Sistema principal:
+<input value="tnbbva-anycast">
+Puerto:
+<input value="23" style="width:40px">
+Nombre de LU:
+<input value="TN108222">
+<button>Desconexión</button>
+</div>
+
+<div class="terminal">
+
+<span class="cyan">
+IIIII   IIIII   II   II    I
+II  II  II  II  II   II   III
+IIIII   IIIII    II II   II II
+II  II  II  II    III   IIIIIII
+IIIII   IIIII      I   II     II
+</span>
+
+                         <span class="cyan">G R U P O</span>
+             <span class="cyan">BANCO  BILBAO  VIZCAYA  ARGENTARIA</span>
+
+
+<span class="white">
+LA PALABRA DE PASO CADUCA A LOS 40 DIAS ¡CAMBIELA ANTES!
+LA NUEVA TENDRA 8 CARACTERES Y SERA DIFERENTE A ANTERIORES
+</span>
+
+
+<span class="red">
+            F A C I L I D A D E S
+
+                 3 2 7 0
+</span>
+
+
+<span class="white">
+============================================================
+
+Teclee CODIGO DE USUARIO, PALABRA DE PASO y pulse INTRO para conectar
+Pulse PF1 para mas informacion o PF3 para Salir.
+</span>
+
+
+<span class="green">Codigo Usuario ==> </span><input id="user">             <span class="green">Palabra de Paso ==> </span><input type="password" id="pass">
+
+
+<span class="green">Cambiar Palabra de Paso (S/N) ? </span><span class="yellow">N</span>
+
+
+</div>
+
+<div class="footer">
+Conectado a un sistema principal/servidor remoto tnbbva-anycast utilizando una agrupación/lu TN108222 y un puerto 23
+</div>
+
+</div>
+
+<script>
+
+document.addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+window.location.href="3270_menu.html";
+}
+
+})
+
+</script>
+
+</body>
+</html>

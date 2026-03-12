@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de jornada</title>
+  <style>
+    :root {
+      --bbva-blue: #004481;
+      --bbva-link: #1464a5;
+      --bbva-teal: #2dcccd;
+      --bbva-teal-dark: #028484;
+      --bbva-gray-bg: #f4f4f4;
+      --bbva-card: #fbfbfb;
+      --bbva-border: #e4e4e4;
+      --bbva-text: #111111;
+      --bbva-muted: #6b6b6b;
+      --bbva-success: #2cb16d;
+      --bbva-info-bg: #e9f6ff;
+      --shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bbva-gray-bg);
+      color: var(--bbva-text);
+    }
+
+    .page {
+      padding: 0 18px 22px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 36px;
+      border-top: 1px solid #cfcfcf;
+      border-bottom: 1px solid #cfcfcf;
+      background: #fff;
+      padding: 0 18px;
+      height: 54px;
+      align-items: stretch;
+    }
+
+    .tab {
+      display: inline-flex;
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      font-size: 18px;
+      color: var(--bbva-link);
+      font-weight: 500;
+    }
+
+    .tab.active {
+      color: var(--bbva-blue);
+      border-bottom-color: var(--bbva-link);
+      font-weight: 700;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #c94f63;
+      color: #fff;
+      font-size: 14px;
+      margin-left: 8px;
+    }
+
+    .top-row {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr 0.9fr;
+      gap: 14px;
+      align-items: center;
+      padding: 18px 0 10px;
+    }
+
+    .welcome {
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .summary-box {
+      background: #fff;
+      border: 1px solid var(--bbva-border);
+      min-height: 98px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .summary-box .label {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .summary-box .value {
+      font-size: 27px;
+      font-weight: 700;
+    }
+
+    .step-bar-area {
+      padding: 4px 0 14px;
+    }
+
+    .step-headings {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      font-size: 17px;
+      margin: 8px 0 10px;
+    }
+
+    .step-headings .active {
+      color: var(--bbva-blue);
+      font-weight: 700;
+    }
+
+    .step-headings .inactive {
+      color: #b4b4b4;
+    }
+
+    .progress {
+      height: 12px;
+      background: rgba(45, 204, 205, 0.22);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 50%;
+      background: var(--bbva-teal);
+      transition: width 0.25s ease;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .grid-step1, .grid-step2, .grid-success {
+      display: grid;
+      grid-template-columns: 1fr 1.95fr;
+      gap: 14px;
+    }
+
+    .grid-step1 .right-panel-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--bbva-border);
+      min-height: 180px;
+      padding: 24px;
+    }
+
+    .date-card {
+      min-height: 388px;
+    }
+
+    .date-big {
+      font-size: 58px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .date-sub {
+      font-size: 25px;
+      margin-bottom: 18px;
+    }
+
+    hr.sep {
+      border: none;
+      border-top: 1px solid #d5d5d5;
+      margin: 0 0 18px;
+    }
+
+    .row-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 18px;
+      margin: 16px 0;
+    }
+
+    .row-line strong.value-em {
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .icon-info {
+      color: var(--bbva-link);
+      font-size: 15px;
+      vertical-align: middle;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 18px 0 12px;
+    }
+
+    .mini-divider {
+      border: none;
+      border-top: 1px solid #d5d5d5;
+      margin: 12px 0 16px;
+    }
+
+    .responsable-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-height: 108px;
+    }
+
+    .emoji-illustration {
+      font-size: 48px;
+      line-height: 1;
+      width: 70px;
+      text-align: center;
+    }
+
+    .time-card {
+      text-align: center;
+      min-height: 388px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .clock-icon {
+      font-size: 54px;
+      color: var(--bbva-link);
+      margin-top: 4px;
+    }
+
+    .time-title {
+      font-size: 20px;
+      margin: 14px 0 18px;
+    }
+
+    .time-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .time-box {
+      width: 86px;
+      height: 86px;
+      background: #f2f2f2;
+      border: 1px solid #efefef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: var(--bbva-link);
+    }
+
+    .colon {
+      font-size: 46px;
+      color: var(--bbva-link);
+      line-height: 1;
+    }
+
+    .inputs-group {
+      display: flex;
+      gap: 16px;
+      margin: 6px 0 34px;
+      align-items: end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .field label {
+      font-size: 14px;
+      color: var(--bbva-muted);
+    }
+
+    .field input, .field select {
+      width: 110px;
+      height: 44px;
+      border: 1px solid #d9d9d9;
+      background: #fff;
+      padding: 0 12px;
+      font-size: 20px;
+    }
+
+    .field select.workplace {
+      width: 170px;
+      font-size: 17px;
+    }
+
+    .btn {
+      min-width: 170px;
+      height: 54px;
+      padding: 0 24px;
+      border: none;
+      color: #fff;
+      background: var(--bbva-teal-dark);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      background: #7ab5b5;
+      cursor: not-allowed;
+    }
+
+    .btn-link {
+      background: transparent;
+      border: none;
+      color: #2274c5;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .step2-panel {
+      min-height: 300px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 22px 8px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .panel-sub {
+      padding: 0 22px 10px;
+      color: var(--bbva-muted);
+      font-size: 16px;
+    }
+
+    .panel-body {
+      border-top: 1px solid #e3e3e3;
+      padding: 18px 22px 20px;
+    }
+
+    .motivo-row {
+      display: grid;
+      grid-template-columns: 1.1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .motivo-left {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .motivo-icon {
+      font-size: 34px;
+      width: 44px;
+      text-align: center;
+      line-height: 1;
+      color: var(--bbva-link);
+      margin-top: 2px;
+    }
+
+    .mini-legend {
+      color: #8d8d8d;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .hours-inputs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      font-size: 18px;
+      color: #666;
+    }
+
+    .hours-cell {
+      width: 52px;
+      height: 52px;
+      background: #f3f3f3;
+      border: 1px solid #ececec;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--bbva-link);
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 17px;
+      padding-top: 4px;
+    }
+
+    .effective-card {
+      min-height: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .send-area {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 20px;
+    }
+
+    .info-card {
+      background: var(--bbva-info-bg);
+      border: 1px solid #d3ebff;
+      min-height: auto;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      font-size: 15px;
+      line-height: 1.45;
+      padding: 18px 22px;
+    }
+
+    .success-banner {
+      background: #fff;
+      border: 1px solid var(--bbva-border);
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .success-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: var(--bbva-success);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .success-banner h2 {
+      margin: 0 0 10px;
+      font-size: 17px;
+    }
+
+    .success-banner p {
+      margin: 0;
+      max-width: 720px;
+      color: #3f3f3f;
+      font-size: 15px;
+    }
+
+    .detail-heading {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--bbva-blue);
+      margin: 4px 0 18px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.32);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 1000;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 760px);
+      max-height: 86vh;
+      overflow: auto;
+      background: #fff;
+      box-shadow: var(--shadow);
+      border: 1px solid #d9d9d9;
+      position: relative;
+      padding: 34px 28px 28px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      border: none;
+      background: transparent;
+      color: var(--bbva-link);
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-question {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--bbva-link);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      margin: 6px auto 18px;
+    }
+
+    .modal h3 {
+      margin: 0;
+      text-align: center;
+      font-size: 23px;
+    }
+
+    .modal-date {
+      text-align: center;
+      font-size: 17px;
+      margin: 26px 0 16px;
+    }
+
+    .summary-lines {
+      border-top: 1px solid #d7d7d7;
+      border-bottom: 1px solid #d7d7d7;
+      padding: 14px 0;
+      margin-bottom: 30px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 17px;
+      margin: 18px 0;
+      font-weight: 700;
+    }
+
+    .summary-line .right {
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 6px;
+    }
+
+    @media (max-width: 1200px) {
+      .grid-step1,
+      .grid-step2,
+      .grid-success {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-step1 .right-panel-two {
+        grid-template-columns: 1fr;
+      }
+
+      .top-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 0 10px 16px; }
+      .tabs { gap: 18px; padding: 0 10px; }
+      .tab { font-size: 15px; }
+      .step-headings { font-size: 14px; }
+      .date-big { font-size: 42px; }
+      .date-sub { font-size: 22px; }
+      .time-display { gap: 8px; }
+      .time-box { width: 68px; height: 68px; font-size: 28px; }
+      .inputs-group { flex-wrap: wrap; }
+      .motivo-row { grid-template-columns: 1fr; }
+      .hours-inputs { justify-content: flex-start; flex-wrap: wrap; }
+      .send-area { justify-content: stretch; }
+      .send-area .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="tabs">
+    <div class="tab active">MI JORNADA HOY</div>
+    <div class="tab">HISTÓRICO DE JORNADAS <span class="badge">3</span></div>
+  </div>
+
+  <div class="page">
+    <div class="top-row">
+      <div class="welcome">Hola <strong>ALBERTO</strong>, para registrar tu jornada selecciona tu hora de inicio y tu hora de fin.</div>
+      <div class="summary-box">
+        <div class="label">Saldo años anteriores</div>
+        <div class="value">0h 00min</div>
+      </div>
+      <div class="summary-box">
+        <div class="label">Saldo acumulado total</div>
+        <div class="value">0h 00min</div>
+      </div>
+    </div>
+
+    <div class="step-bar-area">
+      <div class="step-headings">
+        <div id="step1Label" class="active">PASO 1 REGISTRO HORARIO</div>
+        <div id="step2Label" class="inactive">PASO 2 TIEMPO DE TRABAJO EFECTIVO</div>
+      </div>
+      <div class="progress">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+    </div>
+
+    <section id="screen1" class="screen active">
+      <div class="grid-step1">
+        <div>
+          <div class="card date-card">
+            <div id="dayName" class="date-big">Lunes</div>
+            <div id="dateText" class="date-sub">9 de marzo de 2026</div>
+            <hr class="sep">
+            <div class="row-line"><span>Jornada diaria <span class="icon-info">ℹ️</span></span><strong class="value-em">7h 45min</strong></div>
+          </div>
+
+          <div class="card responsable-card" style="margin-top:14px;">
+            <div class="emoji-illustration">📱</div>
+            <div>
+              <div style="font-size:15px;">Persona autorizadora actual</div>
+              <div style="font-size:17px; font-weight:700;">LUIS MARIA GARIN ARRIETA</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-panel-two">
+          <div class="card time-card">
+            <div class="clock-icon">🕘</div>
+            <div class="time-title">Hora inicio</div>
+            <div class="time-display">
+              <div id="startHourDisplay" class="time-box">--</div>
+              <div class="colon">:</div>
+              <div id="startMinuteDisplay" class="time-box">--</div>
+            </div>
+            <div class="inputs-group">
+              <div class="field">
+                <label for="startHour">Hora</label>
+                <input id="startHour" type="number" min="0" max="23" placeholder="09">
+              </div>
+              <div class="field">
+                <label for="startMinute">Min</label>
+                <input id="startMinute" type="number" min="0" max="59" placeholder="50">
+              </div>
+            </div>
+            <button id="saveStartBtn" class="btn">Guardar</button>
+          </div>
+
+          <div class="card time-card">
+            <div class="clock-icon">🕘</div>
+            <div class="time-title">Hora fin</div>
+            <div class="time-display">
+              <div id="endHourDisplay" class="time-box">--</div>
+              <div class="colon">:</div>
+              <div id="endMinuteDisplay" class="time-box">--</div>
+            </div>
+            <div class="inputs-group">
+              <div class="field">
+                <label for="endHour">Hora</label>
+                <input id="endHour" type="number" min="0" max="23" placeholder="18" disabled>
+              </div>
+              <div class="field">
+                <label for="endMinute">Min</label>
+                <input id="endMinute" type="number" min="0" max="59" placeholder="50" disabled>
+              </div>
+            </div>
+            <button id="saveEndBtn" class="btn" disabled>Guardar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen2" class="screen">
+      <div class="grid-step2">
+        <div>
+          <div class="card date-card" style="min-height:465px;">
+            <div id="dayNameStep2" class="date-big">Lunes</div>
+            <div id="dateTextStep2" class="date-sub">9 de marzo de 2026</div>
+            <hr class="sep">
+            <div class="row-line"><span>Jornada diaria <span class="icon-info">ℹ️</span></span><strong class="value-em">7h 45min</strong></div>
+            <div class="row-line"><span>Hora inicio</span><strong class="value-em" id="startSummary">09:50</strong></div>
+            <div class="row-line"><span>Hora fin</span><strong class="value-em" id="endSummary">18:50</strong></div>
+
+            <div class="section-title">REGISTRO PRELIMINAR</div>
+            <div class="row-line"><span></span><strong id="preliminarySummary">9h 00min</strong></div>
+            <hr class="mini-divider">
+            <div class="row-line"><span>Tiempo mín. de comida</span><strong class="value-em">0h 30min ⊖</strong></div>
+            <div class="section-title">TIEMPO PRELIMINAR PARA CÓMPUTO</div>
+            <div class="row-line"><span></span><strong id="effectiveSummaryLeft">8h 30min</strong></div>
+            <hr class="mini-divider">
+            <div class="row-line" style="margin-top:22px; align-items:center;">
+              <span style="font-weight:700;">Lugar de trabajo</span>
+              <select id="workplaceSelect" class="workplace field select workplace">
+                <option value="Teletrabajo">Teletrabajo</option>
+                <option value="Mixto">Mixto</option>
+                <option value="Presencial" selected>Presencial</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card responsable-card" style="margin-top:14px;">
+            <div class="emoji-illustration">📱</div>
+            <div>
+              <div style="font-size:15px;">Persona autorizadora actual</div>
+              <div style="font-size:17px; font-weight:700;">LUIS MARIA GARIN ARRIETA</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card step2-panel">
+            <div class="panel-head">
+              <div>Diferencia preliminar con jornada diaria <span class="icon-info">ℹ️</span></div>
+              <div id="differenceSummaryTop">0h 45min</div>
+            </div>
+            <div class="panel-sub">Por favor, distribuye la Diferencia entre los siguientes motivos:</div>
+            <div class="panel-body">
+              <div class="motivo-row">
+                <div class="motivo-left">
+                  <div class="motivo-icon">📍</div>
+                  <div>
+                    Exceso sobre Tiempo mínimo de comida, descansos, otros motivos personales
+                  </div>
+                </div>
+                <div class="hours-inputs">
+                  <span class="hours-cell">00</span><span>h</span>
+                  <span class="hours-cell">45</span><span>min ⊖</span>
+                </div>
+              </div>
+
+              <div class="motivo-row" style="margin-bottom:10px;">
+                <div class="motivo-left">
+                  <div class="motivo-icon">💼</div>
+                  <div>
+                    <div>Motivos Laborales</div>
+                    <div class="mini-legend">- Ajuste "Margen Jornada Convenio": - 0h 00min</div>
+                    <div class="mini-legend">- Autodeclaro que he prolongado la jornada con la autorización previa de mi responsable: 0h 00min</div>
+                  </div>
+                </div>
+                <div class="hours-inputs">
+                  <span class="hours-cell">00</span><span>h</span>
+                  <span class="hours-cell">00</span><span>min</span>
+                </div>
+              </div>
+
+              <div class="total-row">Total:&nbsp; <span id="differenceSummaryBottom">0h 45min</span></div>
+            </div>
+          </div>
+
+          <div class="card effective-card" style="margin-top:14px;">
+            <span>TIEMPO DE TRABAJO EFECTIVO</span>
+            <span id="effectiveSummaryRight">7h 45min</span>
+          </div>
+
+          <div class="send-area">
+            <button id="sendBtn" class="btn" style="margin-top:20px;">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenSuccess" class="screen">
+      <div class="success-banner">
+        <div class="success-icon">✓</div>
+        <h2>Muchas gracias por registrar tu jornada</h2>
+        <p>Ha sido registrada con éxito. Podrás consultar y modificar los datos de días pasados en la sección de histórico de jornadas.</p>
+      </div>
+
+      <div class="detail-heading">Detalle de tu registro</div>
+
+      <div class="grid-success">
+        <div>
+          <div class="card date-card" style="min-height:370px;">
+            <div id="dayNameSuccess" class="date-big">Lunes</div>
+            <div id="dateTextSuccess" class="date-sub">9 de marzo de 2026</div>
+            <hr class="sep">
+            <div class="row-line"><span>Jornada diaria <span class="icon-info">ℹ️</span></span><strong class="value-em">7h 45min</strong></div>
+            <div class="row-line"><span>Hora inicio</span><strong class="value-em" id="startSuccess">09:50</strong></div>
+            <div class="row-line"><span>Hora fin</span><strong class="value-em" id="endSuccess">18:50</strong></div>
+            <div class="section-title">REGISTRO PRELIMINAR</div>
+            <div class="row-line"><span></span><strong id="preliminarySuccess">9h 00min</strong></div>
+            <hr class="mini-divider">
+            <div class="row-line"><span>Tiempo mín. de comida</span><strong class="value-em">0h 30min ⊖</strong></div>
+            <div class="section-title">TIEMPO PRELIMINAR PARA CÓMPUTO</div>
+            <div class="row-line"><span></span><strong>8h 30min</strong></div>
+            <hr class="mini-divider">
+            <div class="row-line"><span style="font-weight:700;">Lugar de trabajo</span><span id="workplaceSuccess">Presencial</span></div>
+          </div>
+
+          <div class="card responsable-card" style="margin-top:14px;">
+            <div class="emoji-illustration">📱</div>
+            <div>
+              <div style="font-size:15px;">Persona autorizadora actual</div>
+              <div style="font-size:17px; font-weight:700;">LUIS MARIA GARIN ARRIETA</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card step2-panel">
+            <div class="panel-head">
+              <div>Diferencia preliminar con jornada diaria <span class="icon-info">ℹ️</span></div>
+              <div>0h 45min</div>
+            </div>
+            <div class="panel-body">
+              <div class="motivo-row">
+                <div class="motivo-left">
+                  <div class="motivo-icon">📍</div>
+                  <div>Exceso sobre Tiempo mínimo de comida, descansos, otros motivos personales</div>
+                </div>
+                <div class="hours-inputs">
+                  <span class="hours-cell">00</span><span>h</span>
+                  <span class="hours-cell">45</span><span>min ⊖</span>
+                </div>
+              </div>
+              <div class="motivo-row" style="margin-bottom:10px;">
+                <div class="motivo-left">
+                  <div class="motivo-icon">💼</div>
+                  <div>
+                    <div>Motivos Laborales</div>
+                    <div class="mini-legend">- Ajuste "Margen Jornada Convenio": - 0h 00min</div>
+                    <div class="mini-legend">- Autodeclaro que he prolongado la jornada con la autorización previa de mi responsable: 0h 00min</div>
+                  </div>
+                </div>
+                <div class="hours-inputs">
+                  <span class="hours-cell">00</span><span>h</span>
+                  <span class="hours-cell">00</span><span>min</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card effective-card" style="margin-top:14px;">
+            <span>TIEMPO DE TRABAJO EFECTIVO</span>
+            <span>7h 45min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card info-card" style="margin-top:14px;">
+        <div style="font-size:28px; color: var(--bbva-link);">ℹ️</div>
+        <div>
+          Las diferencias de tiempo cerradas diariamente se consolidan al cierre de cada mes. La compensación de esta diferencia consolidada cada mes se podrá hacer efectiva a partir del día 16 del mes siguiente durante todo el año natural, siempre con la aprobación previa de tu responsable.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="confirmOverlay" class="modal-overlay">
+    <div class="modal">
+      <button id="closeModalBtn" class="modal-close" aria-label="Cerrar">×</button>
+      <div class="modal-question">?</div>
+      <h3>¿Confirmas el registro de tu jornada?</h3>
+      <div id="modalDate" class="modal-date">Lunes, 09 de marzo de 2026</div>
+
+      <div class="summary-lines">
+        <div class="summary-line"><span>REGISTRO PRELIMINAR</span><span id="modalPreliminary" class="right">9h 00min</span></div>
+        <div class="summary-line"><span>TIEMPO DE TRABAJO EFECTIVO</span><span class="right">7h 45min</span></div>
+        <div class="summary-line"><span>AJUSTE MARGEN JORNADA CONVENIO</span><span class="right">- 0h 00min</span></div>
+        <div class="summary-line"><span>DIFERENCIA A COMPENSAR</span><span class="right">0h 00min</span></div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="confirmBtn" class="btn">Confirmar</button>
+        <button id="cancelBtn" class="btn-link">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DAILY_MINUTES = 7 * 60 + 45;
+    const MEAL_BREAK_MINUTES = 30;
+
+    const state = {
+      startMinutes: null,
+      endMinutes: null,
+      workplace: 'Presencial'
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    const refs = {
+      dayName: $('dayName'),
+      dateText: $('dateText'),
+      dayNameStep2: $('dayNameStep2'),
+      dateTextStep2: $('dateTextStep2'),
+      dayNameSuccess: $('dayNameSuccess'),
+      dateTextSuccess: $('dateTextSuccess'),
+      modalDate: $('modalDate'),
+      startHourDisplay: $('startHourDisplay'),
+      startMinuteDisplay: $('startMinuteDisplay'),
+      endHourDisplay: $('endHourDisplay'),
+      endMinuteDisplay: $('endMinuteDisplay'),
+      startHour: $('startHour'),
+      startMinute: $('startMinute'),
+      endHour: $('endHour'),
+      endMinute: $('endMinute'),
+      saveStartBtn: $('saveStartBtn'),
+      saveEndBtn: $('saveEndBtn'),
+      screen1: $('screen1'),
+      screen2: $('screen2'),
+      screenSuccess: $('screenSuccess'),
+      step1Label: $('step1Label'),
+      step2Label: $('step2Label'),
+      progressBar: $('progressBar'),
+      startSummary: $('startSummary'),
+      endSummary: $('endSummary'),
+      preliminarySummary: $('preliminarySummary'),
+      differenceSummaryTop: $('differenceSummaryTop'),
+      differenceSummaryBottom: $('differenceSummaryBottom'),
+      effectiveSummaryLeft: $('effectiveSummaryLeft'),
+      effectiveSummaryRight: $('effectiveSummaryRight'),
+      workplaceSelect: $('workplaceSelect'),
+      sendBtn: $('sendBtn'),
+      confirmOverlay: $('confirmOverlay'),
+      closeModalBtn: $('closeModalBtn'),
+      cancelBtn: $('cancelBtn'),
+      confirmBtn: $('confirmBtn'),
+      modalPreliminary: $('modalPreliminary'),
+      startSuccess: $('startSuccess'),
+      endSuccess: $('endSuccess'),
+      preliminarySuccess: $('preliminarySuccess'),
+      workplaceSuccess: $('workplaceSuccess')
+    };
+
+    function pad2(n) {
+      return String(n).padStart(2, '0');
+    }
+
+    function formatMinutes(totalMinutes) {
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      return `${hours}h ${pad2(minutes)}min`;
+    }
+
+    function formatClock(totalMinutes) {
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      return `${pad2(hours)}:${pad2(minutes)}`;
+    }
+
+    function computePreliminaryMinutes() {
+      if (state.startMinutes == null || state.endMinutes == null) return 0;
+      return Math.max(0, state.endMinutes - state.startMinutes);
+    }
+
+    function computeDifferenceMinutes() {
+      return Math.max(0, computePreliminaryMinutes() - DAILY_MINUTES);
+    }
+
+    function setTodayDate() {
+      const now = new Date();
+      const weekday = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(now);
+      const dayNum = now.getDate();
+      const month = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(now);
+      const year = now.getFullYear();
+
+      const dayCap = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+      const dateShort = `${dayNum} de ${month} de ${year}`;
+      const dateLong = `${dayCap}, ${pad2(dayNum)} de ${month} de ${year}`;
+
+      refs.dayName.textContent = dayCap;
+      refs.dateText.textContent = dateShort;
+      refs.dayNameStep2.textContent = dayCap;
+      refs.dateTextStep2.textContent = dateShort;
+      refs.dayNameSuccess.textContent = dayCap;
+      refs.dateTextSuccess.textContent = dateShort;
+      refs.modalDate.textContent = dateLong;
+    }
+
+    function updateDisplays() {
+      refs.startHourDisplay.textContent = state.startMinutes == null ? '--' : pad2(Math.floor(state.startMinutes / 60));
+      refs.startMinuteDisplay.textContent = state.startMinutes == null ? '--' : pad2(state.startMinutes % 60);
+      refs.endHourDisplay.textContent = state.endMinutes == null ? '--' : pad2(Math.floor(state.endMinutes / 60));
+      refs.endMinuteDisplay.textContent = state.endMinutes == null ? '--' : pad2(state.endMinutes % 60);
+    }
+
+    function validateHourMinute(hourValue, minuteValue) {
+      const h = Number(hourValue);
+      const m = Number(minuteValue);
+      if (!Number.isInteger(h) || !Number.isInteger(m)) return null;
+      if (h < 0 || h > 23 || m < 0 || m > 59) return null;
+      return h * 60 + m;
+    }
+
+    function enableEndInputs() {
+      refs.endHour.disabled = false;
+      refs.endMinute.disabled = false;
+      refs.saveEndBtn.disabled = false;
+    }
+
+    function goToStep2() {
+      refs.screen1.classList.remove('active');
+      refs.screen2.classList.add('active');
+      refs.screenSuccess.classList.remove('active');
+      refs.step1Label.classList.remove('active');
+      refs.step1Label.classList.add('inactive');
+      refs.step2Label.classList.remove('inactive');
+      refs.step2Label.classList.add('active');
+      refs.progressBar.style.width = '100%';
+      populateStep2();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function populateStep2() {
+      const preliminary = computePreliminaryMinutes();
+      const difference = computeDifferenceMinutes();
+      refs.startSummary.textContent = formatClock(state.startMinutes);
+      refs.endSummary.textContent = formatClock(state.endMinutes);
+      refs.preliminarySummary.textContent = formatMinutes(preliminary);
+      refs.modalPreliminary.textContent = formatMinutes(preliminary);
+      refs.preliminarySuccess.textContent = formatMinutes(preliminary);
+      refs.differenceSummaryTop.textContent = formatMinutes(difference);
+      refs.differenceSummaryBottom.textContent = formatMinutes(difference);
+      refs.workplaceSuccess.textContent = refs.workplaceSelect.value;
+      refs.startSuccess.textContent = formatClock(state.startMinutes);
+      refs.endSuccess.textContent = formatClock(state.endMinutes);
+    }
+
+    function openModal() {
+      refs.confirmOverlay.classList.add('show');
+    }
+
+    function closeModal() {
+      refs.confirmOverlay.classList.remove('show');
+    }
+
+    function showSuccess() {
+      refs.screen1.classList.remove('active');
+      refs.screen2.classList.remove('active');
+      refs.screenSuccess.classList.add('active');
+      closeModal();
+      refs.workplaceSuccess.textContent = refs.workplaceSelect.value;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    refs.saveStartBtn.addEventListener('click', () => {
+      const minutes = validateHourMinute(refs.startHour.value, refs.startMinute.value);
+      if (minutes == null) {
+        alert('Introduce una hora de inicio válida.');
+        return;
+      }
+      state.startMinutes = minutes;
+      updateDisplays();
+      enableEndInputs();
+    });
+
+    refs.saveEndBtn.addEventListener('click', () => {
+      if (state.startMinutes == null) {
+        alert('Primero debes guardar la hora de inicio.');
+        return;
+      }
+      const minutes = validateHourMinute(refs.endHour.value, refs.endMinute.value);
+      if (minutes == null) {
+        alert('Introduce una hora de fin válida.');
+        return;
+      }
+      if (minutes <= state.startMinutes) {
+        alert('La hora de fin debe ser posterior a la hora de inicio.');
+        return;
+      }
+      state.endMinutes = minutes;
+      updateDisplays();
+      goToStep2();
+    });
+
+    refs.workplaceSelect.addEventListener('change', (e) => {
+      state.workplace = e.target.value;
+    });
+
+    refs.sendBtn.addEventListener('click', openModal);
+    refs.closeModalBtn.addEventListener('click', closeModal);
+    refs.cancelBtn.addEventListener('click', closeModal);
+    refs.confirmBtn.addEventListener('click', showSuccess);
+
+    refs.confirmOverlay.addEventListener('click', (e) => {
+      if (e.target === refs.confirmOverlay) closeModal();
+    });
+
+    setTodayDate();
+    updateDisplays();
+  </script>
+</body>
+</html>
